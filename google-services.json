@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156177025881",
+    "project_id": "anotrade-ade89",
+    "storage_bucket": "anotrade-ade89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156177025881:android:a694323de0c3eebdee5a48",
+        "android_client_info": {
+          "package_name": "com.Anotrade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiE6WqM3O1-oS6gTdJMBHGDXZZbT_wAuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

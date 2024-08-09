@@ -10,7 +10,7 @@ import CoreService from '../../components/CoreService'
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={[styles.scrollview]}>
         <Pressable style={[styles.container]}>
         <View>
           <Welcome/>
@@ -35,6 +35,10 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollview:{
+    backgroundColor:'black',
+    minHeight:'100%',
+  },
   safeArea: {
     flex: 1,
     marginTop:StatusBar.currentHeight,
@@ -44,10 +48,10 @@ const styles = StyleSheet.create({
     borderColor:'red',
   },
   container:{
-    // borderWidth:1,
-    minHeight:'100%',
+    borderWidth:1,
+    height:'100%',
     backgroundColor:'black',
-    // borderColor:'blue',
+    borderColor:'red',
   },
   text:{
     textAlign: 'center',

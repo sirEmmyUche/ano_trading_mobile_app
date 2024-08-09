@@ -1,11 +1,9 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView,StatusBar,View,Text,ScrollView, Pressable} from 'react-native';
-// import CustomScrollView from '@/components/CustomScrollView';
-// import { Text } from '@/components/Text';
-// import { View } from '@/components/View';
-import PastSignal from '../../components/pastSignals';
-import Welcome from '../../components/Welcome';
-import CoreService from '../../components/CoreService'
+import PastSignal from '../../../components/pastSignals';
+import Welcome from '@/components/Welcome';
+import CoreService from '../../../components/CoreService';
+
 
 export default function HomeScreen() {
   return (
@@ -36,7 +34,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   scrollview:{
-    backgroundColor:'black',
+    backgroundColor:'#121212',
     minHeight:'100%',
   },
   safeArea: {
@@ -48,10 +46,10 @@ const styles = StyleSheet.create({
     borderColor:'red',
   },
   container:{
-    borderWidth:1,
+    // borderWidth:1,
     height:'100%',
-    backgroundColor:'black',
-    borderColor:'red',
+    backgroundColor:'#121212',
+    // borderColor:'red',
   },
   text:{
     textAlign: 'center',
@@ -60,6 +58,7 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'bold',
     color: '#fff',
+    opacity:0.7
   },
 });
 

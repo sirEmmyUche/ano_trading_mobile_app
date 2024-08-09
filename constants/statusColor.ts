@@ -2,41 +2,41 @@ import { StyleSheet } from "react-native";
 
 export const statusColor = (status:string)=>{
     switch(status){
-        case 'completed': return [styles.completed, styles.border];
+        case 'completed': return [styles.completed,];
         break;
-        case 'active': return [styles.active, styles.border];
+        case 'active': return [styles.active,];
         break
-        case 'pending':return [styles.pending, styles.border];
+        case 'pending':return [styles.pending,];
         break
-        case 'deleted':return [styles.deleted, styles.border];
+        case 'deleted':return [styles.deleted,];
         break
-        case 'closed': return [styles.closed, styles.border];
+        case 'closed': return [styles.closed,];
         default: return 'default'
     }
 }
 
 const styles = StyleSheet.create({
-    border:{
-        borderWidth:1
-    },
+    // border:{
+    //     borderWidth:1
+    // },
     pending:{
-        backgroundColor:'#28ce30',
-        borderColor:'#28ce30',
+        backgroundColor:'#b58c10',
+        borderColor:'#b58c10',
     },
     completed:{
-        borderColor:'gray',
-        backgroundColor:'gray'
+        borderColor:'#4682b4',
+        backgroundColor:'#4682b4'
     },
     active:{
-        borderColor:'orange',
-        backgroundColor:'orange'
+        borderColor:'#34c759',
+        backgroundColor:'#34c759'
     },
     closed:{
-        borderColor:'pink',
-        backgroundColor:'pink'
+        borderColor:'#6c757d',
+        backgroundColor:'#6c757d'
     },
     deleted:{
-        borderColor:'red',
-        backgroundColor:'red'
+        borderColor:'#e74c3c',
+        backgroundColor:'#e74c3c'
     }
 })

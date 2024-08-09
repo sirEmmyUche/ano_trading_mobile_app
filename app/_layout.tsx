@@ -8,19 +8,12 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Firebase from '../firebase';
 import {SessionProvider, } from '../context/userContext';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-// import CustomLoadingScreen from '@/components/appStartScreen';
-// import { useRouter, useSegments } from 'expo-router';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
-  // const { user, setUser } = useAuth();
-  // const router = useRouter();
-  // const segments = useSegments();
   const [fontsLoaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -32,12 +25,6 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
-  // useEffect(() => {
-  //   if(!user && segments[0] === 'tabs') {
-  //     router.replace('/(auth)/login');
-  //   }
-  // }, [user, segments, router]);
-
   if (!fontsLoaded) {
     return null;;
   }
@@ -45,15 +32,12 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
-        {/* <SafeAreaProvider> */}
         <SessionProvider>
           <Stack screenOptions={{headerShown:false,}}>
             <Stack.Screen name="(tabs)" options={{headerShown: false,}}/>
             <Stack.Screen name="(auth)" options={{headerShown: false,}}/>
-              {/* <Slot /> */}
           </Stack>
         </SessionProvider>
-        {/* </SafeAreaProvider> */}
       </QueryClientProvider>
     </ThemeProvider>
   );

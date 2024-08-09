@@ -1,16 +1,16 @@
 import React from 'react';
-import {Pressable, StyleSheet, ScrollView,Text,View,Image
+import {Pressable, StyleSheet, ScrollView,Text,View,SafeAreaView,Image
     ,StatusBar} from 'react-native';
 import { IoniconsTabBarIcon, MaterialTabBarIcon, 
-    OcticonsTabBarIcon } from './navigation/TabBarIcon';
+    OcticonsTabBarIcon } from '../../../components/navigation/TabBarIcon';
 
 function HowToUseSignalScreen() {
     return (
-        // <SafeAreaView style={styles.safeArea}>
-            // <ScrollView>
-                <Pressable style={[styles.border,styles.mainContainer]}>
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView contentContainerStyle={[styles.scrollview]}>
+                <Pressable style={[styles.mainContainer]}>
                     <View style={[styles.imageWrapper]}>
-                        <Image source={require('../assets/images/bull-and-bear-1.jpg')}
+                        <Image source={require('../../../assets/images/bull-and-bear-1.jpg')}
                         style={{height:150}}
                         resizeMode='contain'/>
                     </View>
@@ -48,18 +48,23 @@ function HowToUseSignalScreen() {
                         </View>
                     </View>
                 </Pressable>
-            // </ScrollView>
-        // </SafeAreaView>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     safeArea: {
-        // flex: 1,
-        marginTop:StatusBar.currentHeight,
+        // marginTop:StatusBar.currentHeight,
     },
+    scrollview:{
+        backgroundColor:'#121212',
+        minHeight:'100%',
+      },
     mainContainer:{
         padding:10,
+        backgroundColor:'#121212',
+        height:'100%'
     },
     imageWrapper:{
         height:200,
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
         color:'#fff',
         fontSize: 16,
         lineHeight: 20,
+        opacity:0.6
     },
     title:{
         color:'#fff',
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         marginTop:10,
         marginBottom:10,
+        opacity:0.8
     },
     subtitle:{
         color:'#fff',
@@ -86,6 +93,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop:10,
         marginBottom:10,
+        opacity:0.8
     },
     statusWrapper:{
         flexDirection:'row',

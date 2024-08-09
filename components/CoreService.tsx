@@ -12,7 +12,7 @@ export default function CoreService(){
                 <Image source={require('@/assets/images/signal-2-img-mobile.png')} 
                 style={styles.image} resizeMode="contain" />
               </View>
-              <Link href={'/(signals)'}>
+              <Link href={'/how_to_use_signals'}>
               <Text style={styles.serviceTextSubtitle}>Signals</Text></Link>
             </Pressable>
             <Pressable style={[styles.serviceItem,styles.boxShadow]}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         shadowOffset:{width:-3, height:3},
         shadowOpacity:1,
         shadowRadius:1,
-        elevation:5,
+        elevation:3,
       },
       serviceTextView: {
         marginTop: 5,
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
       },
-      border: {
-        borderWidth: 1,
-        borderColor: 'red',
-      },
+      // border: {
+      //   borderWidth: 1,
+      //   borderColor: 'red',
+      // },
 })
 

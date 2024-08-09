@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getPastSignals } from '@/APIs';
-import { StyleSheet, Image, View, Text, ViewStyle, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Image, View, Text, ViewStyle, Platform,
+  Pressable, Dimensions } from 'react-native';
 import { statusColor } from '../constants/statusColor';
 import Carousel from 'react-native-reanimated-carousel';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function PastSignal() {
   const { isLoading, isError, data, error } = useQuery({
@@ -51,130 +53,147 @@ export default function PastSignal() {
       </View>
     );
   }
+  // const androidShadow = {
+  //   shadowColor: "#cccccc",
+  //   elevation:3,
+  // }
+  // const iosShadow = {
+  //   shadowColor: "#cccccc",
+  //   shadowOffset: { width: -3, height: 3 },
+  //   shadowOpacity: 1,
+  //   shadowRadius: 1,
+  // }
+  // const shawdowStyle = Platform.OS === 'ios'? iosShadow : androidShadow
 
   const hasSignals = data.status === 'success' && data.signals.length > 0;
   const windowWidth = Dimensions.get('window').width;
 
   return (
-    <Pressable style={[styles.border]}>
-      {hasSignals ? (
-        <Carousel
-          loop={true}
-          mode={'parallax'}
-          autoPlay={isAutoPlay} 
-          autoPlayInterval={3000}
-          width={windowWidth}
-          height={450} // Adjust height based on your card height
-          data={data.signals}
-          scrollAnimationDuration={1000}
-          pagingEnabled={true} // Snap to each item after scroll
-          snapEnabled={true} // Ensure snapping
-          onScrollEnd={() => setIsAutoPlay(true)} // Restart auto-play after scrolling
-          onScrollBegin={() => setIsAutoPlay(false)} // Pause auto-play during user interaction
-          renderItem={({ item: signal }) => (
-            <View key={signal._id} style={[styles.card, styles.boxShadow]}>
-              <View style={[styles.signalChartParent, styles.border]}>
-                <View style={[styles.signalChartChild, styles.border]}>
-                  <View style={[styles.imageBox]}>
-                    <Image source={{ uri: `${signal.signalChart.before}` }} style={[styles.image]} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Pressable style={[styles.border]}>
+        {hasSignals ? (
+          <Carousel
+            loop={true} // Enable looping
+            mode={'parallax'}
+            autoPlay={isAutoPlay} // Conditionally enable auto-play
+            autoPlayInterval={3000} // 3 seconds interval between transitions
+            width={windowWidth}
+            height={400} // Adjust height based on your card height
+            data={data.signals}
+            scrollAnimationDuration={1000}
+            pagingEnabled={true} // Snap to each item after scroll
+            snapEnabled={true}
+            onScrollEnd={() => setIsAutoPlay(true)} // Restart auto-play after scrolling
+            onScrollBegin={() => setIsAutoPlay(false)} // Pause auto-play during user interaction
+            renderItem={({ item: signal }) => (
+              <View key={signal._id} style={[styles.card,styles.boxShadow]}>
+                <View style={[styles.signalChartParent,]}>
+                  <View style={[styles.signalChartChild, styles.boxShadow,]}>
+                    <View style={[styles.imageBox]}>
+                      <Image source={{ uri:`${signal.signalChart.before}` }} style={[styles.image]}
+                      resizeMode='contain'
+                      />
+                    </View>
+                    <View>
+                      <Text style={{ color: '#e73c7e' }}>Before</Text>
+                    </View>
                   </View>
-                  <View>
-                    <Text style={{ color: '#e73c7e' }}>Before</Text>
+                  <View style={[styles.signalChartChild,styles.boxShadow,]}>
+                    <View style={[styles.imageBox]}>
+                      <Image source={{ uri: `${signal.signalChart.after}` }} style={[styles.image]}
+                        resizeMode='contain'
+                         />
+                    </View>
+                    <View>
+                      <Text style={{ color: '#28ce30' }}>After</Text>
+                    </View>
                   </View>
                 </View>
-                <View style={[styles.signalChartChild]}>
-                  <View style={[styles.imageBox]}>
-                    <Image source={{ uri: `${signal.signalChart.after}` }} style={[styles.image]} />
-                  </View>
-                  <View>
-                    <Text style={{ color: '#28ce30' }}>After</Text>
-                  </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Market:</Text>
+                  <Text style={[styles.cardContentText, styles.text]}>{signal.marketType}</Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Name:</Text>
+                  <Text style={[styles.cardContentText, styles.text]}>{signal.instrumentName}</Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Symbol:</Text>
+                  <Text style={[styles.cardContentText, styles.text, { textTransform: 'uppercase' }]}>
+                    {signal.instrumentSymbol}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Execution Type:</Text>
+                  <Text style={
+                    signal.executionType === 'buy limit' || signal.executionType === 'buy stop'
+                      ? [styles.cardContentText, { color: '#28ce30' }]
+                      : [styles.cardContentText, { color: '#e73c7e' }]
+                  }>
+                    {signal.executionType}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Status:</Text>
+                  <Text style={[styles.cardContentText, {color:'#fff',fontWeight:'500'}
+                    , statusColor(signal.status) as ViewStyle]}>
+                    {signal.status}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>First entry:</Text>
+                  <Text style={[styles.cardContentText, styles.text]} selectable={true}>
+                    {signal.entryPrice.price.firstEntryPrice}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Second entry:</Text>
+                  <Text style={[styles.cardContentText, styles.text]} selectable={true}>
+                    {signal.entryPrice.price.secondEntryPrice}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Outcome:</Text>
+                  <Text style={signal.signalOutcome === 'loss'
+                    ? [styles.cardContentText, { color: '#e73c7e' }]
+                    : [styles.cardContentText, { color: '#28ce30' }]
+                  }>
+                    {signal.signalOutcome}
+                  </Text>
+                </View>
+                <View style={[styles.cardContentView]}>
+                  <Text style={[styles.text]}>Note:</Text>
+                  <Text style={[styles.cardContentText, styles.text]}>{signal.note}</Text>
                 </View>
               </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Market:</Text>
-                <Text style={[styles.cardContentText, styles.text]}>{signal.marketType}</Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Name:</Text>
-                <Text style={[styles.cardContentText, styles.text]}>{signal.instrumentName}</Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Symbol:</Text>
-                <Text style={[styles.cardContentText, styles.text, { textTransform: 'uppercase' }]}>
-                  {signal.instrumentSymbol}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Execution Type:</Text>
-                <Text style={
-                  signal.executionType === 'buy limit' || signal.executionType === 'buy stop'
-                    ? [styles.cardContentText, { color: '#28ce30' }]
-                    : [styles.cardContentText, { color: '#e73c7e' }]
-                }>
-                  {signal.executionType}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Status:</Text>
-                <Text style={[styles.cardContentText, statusColor(signal.status) as ViewStyle]}>
-                  {signal.status}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>First entry:</Text>
-                <Text style={[styles.cardContentText, styles.text]} selectable={true}>
-                  {signal.entryPrice.price.firstEntryPrice}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Second entry:</Text>
-                <Text style={[styles.cardContentText, styles.text]} selectable={true}>
-                  {signal.entryPrice.price.secondEntryPrice}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Outcome:</Text>
-                <Text style={signal.signalOutcome === 'loss'
-                  ? [styles.cardContentText, { color: '#e73c7e' }]
-                  : [styles.cardContentText, { color: '#28ce30' }]
-                }>
-                  {signal.signalOutcome}
-                </Text>
-              </View>
-              <View style={[styles.cardContentView]}>
-                <Text style={[styles.text]}>Note:</Text>
-                <Text style={[styles.cardContentText, styles.text]}>{signal.note}</Text>
-              </View>
-            </View>
-          )}
-        />
-      ) : (
-        <View style={[styles.serverResponse]}>
-          <Text style={{ textAlign: 'center' }}>
-            There was an issue fetching past signals. Please try again later.
-          </Text>
-        </View>
-      )}
-    </Pressable>
+            )}
+          />
+        ) : (
+          <View style={[styles.serverResponse]}>
+            <Text style={{ textAlign: 'center' }}>
+              There was an issue fetching past signals. Please try again later.
+            </Text>
+          </View>
+        )}
+      </Pressable>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  border: {
-    borderWidth: 1,
-    borderColor: 'red'
-  },
+  // border: {
+  //   borderWidth: 1,
+  //   borderColor: 'transparent'
+  // },
   boxShadow: {
     shadowColor: "#cccccc",
     shadowOffset: { width: -3, height: 3 },
     shadowOpacity: 1,
     shadowRadius: 1,
-    elevation: 5,
+    elevation:3,
   },
   serverResponse: {
     width: '100%',
-    height:'100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -192,10 +211,10 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '90%',
-    margin: 20,
+    // margin:4,
     padding: 10,
-    borderWidth:1,
-    borderColor:'green'
+    // borderWidth:1,
+    // borderColor:'green'
   },
   cardContentView: {
     flexDirection: 'row',
@@ -205,20 +224,20 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   image: {
-    maxWidth: '100%',
-    height: '100%',
-    aspectRatio: 1,
-    resizeMode: 'center',
+    height:200,
+    width:'100%',
   },
   imageBox: {
-    borderWidth: 1,
+    // borderWidth: 1,
     marginBottom: '2%',
     width: '90%',
     height: 100,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent:'center'
   },
   text: {
-    color: '#fff'
+    color: '#fff',
+    opacity:0.6
   }
 });
 

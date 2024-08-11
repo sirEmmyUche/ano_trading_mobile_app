@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import { Text, View, StyleSheet, TextInput, 
   SafeAreaView, ScrollView, KeyboardAvoidingView, Platform,
-  Pressable} from 'react-native';
+  Pressable,
+  StatusBar} from 'react-native';
 import Octicons from '@expo/vector-icons/Octicons';
 import { useForm, Controller } from 'react-hook-form';
 import { Link, useRouter } from 'expo-router';
@@ -159,12 +160,13 @@ const styles = StyleSheet.create({
   },
   safeArea:{
     flex:1,
+    marginTop:StatusBar.currentHeight,
     backgroundColor: '#000000',
   },
   container: {
     flex: 1,
     padding:10,
-    backgroundColor: '#000000',
+    backgroundColor: '#12121',
     justifyContent:'space-evenly',
   },
   headerContainer:{
@@ -243,11 +245,10 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#010101',
     borderWidth:1,
-    // borderColor:'#27AE60',
-    borderColor:'#2471A3',
-    // borderColor: '#666666',
-    color:'#666666',
-    fontSize:16,
+    borderColor:'#fff',
+    opacity:0.3,
+    fontSize:20,
+    color:'#fff',
     height: 40,
     padding: 10,
     borderRadius: 5,

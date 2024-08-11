@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import { Text, View, StyleSheet, TextInput, 
   SafeAreaView, ScrollView,
-  Pressable} from 'react-native';
+  Pressable,
+  StatusBar} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Link,} from 'expo-router';
 import { forgotPassword } from '@/APIs';
@@ -9,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view'
 
 
 const formSchema = z.object({
@@ -117,6 +119,27 @@ export default function FogotPasswordScreen(){
                 <Text style={[styles.linkToOtherPageText,]}>Sign In</Text>
             </Link>
           </Pressable>
+          <MaskedView
+            style={{ flex: 1,flexDirection:'row',height:100,}} 
+            maskElement={
+              <View
+                style={{
+                  backgroundColor: 'transparent',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth:1,
+                  borderColor:'red'
+                }}>
+                <Text style={{fontSize:20,color:'white'}}>My name is checking whether it is working?</Text>
+              </View>
+            }
+            >
+            <LinearGradient
+                colors={['red', 'blue', 'green']}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={{ flex: 1 }}/>
+            </MaskedView>
           </View>
       </View>
     </View>
@@ -133,7 +156,7 @@ const styles = StyleSheet.create({
   },
   safeArea:{
     flex:1,
-    backgroundColor: '#000000',
+    marginTop:StatusBar.currentHeight
   },
   container: {
     flex: 1,
@@ -196,11 +219,12 @@ const styles = StyleSheet.create({
     marginBottom:5
   },
   input: {
-    fontSize: 16,
     backgroundColor: '#010101',
     borderWidth:1,
-    borderColor:'#2471A3',
-    color:'#666666',
+    borderColor:'#fff',
+    opacity:0.3,
+    fontSize:20,
+    color:'#fff',
     height: 40,
     padding: 10,
     borderRadius: 5,

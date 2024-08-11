@@ -5,7 +5,7 @@ import { StyleSheet, Image, View, Text, ViewStyle, Platform,
   Pressable, Dimensions } from 'react-native';
 import { statusColor } from '../constants/statusColor';
 import Carousel from 'react-native-reanimated-carousel';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 
 export default function PastSignal() {
   const { isLoading, isError, data, error } = useQuery({
@@ -20,7 +20,7 @@ export default function PastSignal() {
   if (isLoading) {
     return (
       <View style={[styles.serverResponse]}>
-        <Text style={{ textAlign: 'center' }}>Loading...</Text>
+        <Text style={{ textAlign: 'center',color:'#fff' }}>Loading...</Text>
       </View>
     );
   }
@@ -28,7 +28,7 @@ export default function PastSignal() {
   if (isError) {
     console.error("Error fetching past signals:", error);
     return (
-      <View style={[styles.serverResponse]}>
+      <View style={[styles.serverResponse,]}>
         <Text style={{ textAlign: 'center', color: 'red' }}>
           Unable to display past trades. Please try again later.
         </Text>
@@ -53,24 +53,13 @@ export default function PastSignal() {
       </View>
     );
   }
-  // const androidShadow = {
-  //   shadowColor: "#cccccc",
-  //   elevation:3,
-  // }
-  // const iosShadow = {
-  //   shadowColor: "#cccccc",
-  //   shadowOffset: { width: -3, height: 3 },
-  //   shadowOpacity: 1,
-  //   shadowRadius: 1,
-  // }
-  // const shawdowStyle = Platform.OS === 'ios'? iosShadow : androidShadow
 
   const hasSignals = data.status === 'success' && data.signals.length > 0;
   const windowWidth = Dimensions.get('window').width;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Pressable style={[styles.border]}>
+      <Pressable style={{flex:1}}>
         {hasSignals ? (
           <Carousel
             loop={true} // Enable looping
@@ -85,9 +74,9 @@ export default function PastSignal() {
             snapEnabled={true}
             onScrollEnd={() => setIsAutoPlay(true)} // Restart auto-play after scrolling
             onScrollBegin={() => setIsAutoPlay(false)} // Pause auto-play during user interaction
-            renderItem={({ item: signal }) => (
+            renderItem={({ item:signal}:any) => (
               <View key={signal._id} style={[styles.card,styles.boxShadow]}>
-                <View style={[styles.signalChartParent,]}>
+                <View style={[styles.signalChartParent,styles.boxShadow,]}>
                   <View style={[styles.signalChartChild, styles.boxShadow,]}>
                     <View style={[styles.imageBox]}>
                       <Image source={{ uri:`${signal.signalChart.before}` }} style={[styles.image]}
@@ -170,7 +159,7 @@ export default function PastSignal() {
           />
         ) : (
           <View style={[styles.serverResponse]}>
-            <Text style={{ textAlign: 'center' }}>
+            <Text style={{ textAlign: 'center',color:'red'}}>
               There was an issue fetching past signals. Please try again later.
             </Text>
           </View>
@@ -183,16 +172,24 @@ export default function PastSignal() {
 const styles = StyleSheet.create({
   // border: {
   //   borderWidth: 1,
-  //   borderColor: 'transparent'
+  //   borderColor:'red',
   // },
-  boxShadow: {
+  boxShadow:{
+    ...Platform.select({
+      ios:{
     shadowColor: "#cccccc",
-    shadowOffset: { width: -3, height: 3 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
     shadowRadius: 1,
-    elevation:3,
+      },
+      android:{
+        shadowColor: "#cccccc",
+        elevation:3,
+      }
+    })
   },
   serverResponse: {
+    height:200,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -200,6 +197,7 @@ const styles = StyleSheet.create({
   signalChartParent: {
     width: '100%',
     borderWidth: 1,
+    borderColor:'transparent',
     padding: 10,
     marginBottom: '5%',
     flexDirection: 'row',
@@ -213,8 +211,8 @@ const styles = StyleSheet.create({
     width: '90%',
     // margin:4,
     padding: 10,
-    // borderWidth:1,
-    // borderColor:'green'
+    borderWidth:1,
+    borderColor:'transparent'
   },
   cardContentView: {
     flexDirection: 'row',

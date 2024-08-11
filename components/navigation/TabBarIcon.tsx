@@ -2,7 +2,9 @@ import { type ComponentType } from 'react';
 import { type IconProps } from '@expo/vector-icons/build/createIconSet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Zocial from '@expo/vector-icons/Zocial';
 import Octicons from '@expo/vector-icons/Octicons'
+import Fontisto from '@expo/vector-icons/Fontisto'
 
 function createTabBarIcon(IconComponent: ComponentType<IconProps<any>>) {
   return function TabBarIcon({ style, ...rest }: IconProps<any>) {
@@ -13,6 +15,9 @@ function createTabBarIcon(IconComponent: ComponentType<IconProps<any>>) {
 export const IoniconsTabBarIcon = createTabBarIcon(Ionicons);
 export const MaterialTabBarIcon = createTabBarIcon(MaterialIcons);
 export const OcticonsTabBarIcon = createTabBarIcon(Octicons);
+export const ZocialIcon = createTabBarIcon(Zocial);
+export const FontistoIcon = createTabBarIcon(Fontisto);
+
 
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/

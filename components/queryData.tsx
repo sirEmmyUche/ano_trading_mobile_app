@@ -1,8 +1,7 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
-import { ThemedView } from "./ThemedView";
-import { ThemedText } from "./ThemedText";
-import { Pressable, StyleSheet,Button} from 'react-native';
+import { Pressable, StyleSheet,Text,View} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface QueryDataProps {
   apiFunction: (page: number) => Promise<any>;
@@ -20,62 +19,60 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
 
   if (isLoading) {
     return (
-      <ThemedView style={[styles.serverResponse,]}>
-        <ThemedText style={{textAlign:'center'}}>Loading...</ThemedText>
-      </ThemedView>
+      <View style={[styles.serverResponse,]}>
+        <Text style={[styles.errResText]}>Loading...</Text>
+      </View>
     );
   }
 
   if(isError) {
     console.error("Error fetching past signals:", error);
     return (
-      <ThemedView style={[styles.serverResponse,]}>
-        <ThemedText style={{textAlign:'center'}}>
+      <View style={[styles.serverResponse,]}>
+        <Text style={[styles.errResText]}>
           Unable to display past trades. Please try again later.
-        </ThemedText>
-      </ThemedView>
+        </Text>
+      </View>
     );
   }
 
   if(!data) {
     return (
-      <ThemedView style={[styles.serverResponse,]}>
-          <ThemedText style={{textAlign:'center'}}>
+      <View style={[styles.serverResponse,]}>
+          <Text style={[styles.errResText]}>
             No response from server. Please try again later.
-          </ThemedText>
-      </ThemedView>
+          </Text>
+      </View>
     );
   }
 
   if (data.status === 'failed') {
     return (
-      <ThemedView style={[styles.serverResponse,]}>
-        <ThemedText style={{textAlign:'center'}}>{data.message}</ThemedText>
-      </ThemedView>
+      <View style={[styles.serverResponse,]}>
+        <Text style={[styles.errResText]}>{data.message}</Text>
+      </View>
   );
   }
 
   const hasSignals = data.status === 'success' && data.signals.length > 0;
 
   return (
-    <ThemedView>
+    <View>
       {hasSignals ? (
         <>
           {renderData(data)}
-          <ThemedView style={styles.paginationHolder}>
-            <ThemedText>Current Page: {page + 1}</ThemedText>
-            <ThemedView style={styles.buttonHolder}>
-              <Button
-                // style={styles.button}
+          <View style={styles.paginationHolder}>
+            <Text style={[styles.text]}>Current Page: {page + 1}</Text>
+            <View style={styles.buttonHolder}>
+              <Pressable
+                style={styles.btn}
                 onPress={() => setPage((old) => Math.max(old - 1, 0))}
                 disabled={page === 0}
-                title="Previous"
               >
-                {/* <ThemedText>Previous</ThemedText> */}
-              </Button>
-              <Button
-                // style={styles.button}
-                title="Next"
+                <Text>Previous</Text>
+              </Pressable>
+              <Pressable
+                style={styles.btn}
                 onPress={() => {
                   if (!isPlaceholderData && data.hasMore) {
                     setPage((old) => old + 1);
@@ -83,43 +80,72 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
                 }}
                 disabled={isPlaceholderData || !data?.hasMore}
               >
-                {/* <ThemedText>Next</ThemedText> */}
-              </Button>
-            </ThemedView>
-            <ThemedText>{isFetching ? 'Loading...' : null}</ThemedText>
-          </ThemedView>
+                <Text>Next</Text>
+              </Pressable>
+            </View>
+            <Text style={[styles.text]}>{isFetching ? 'Loading...' : null}</Text>
+          </View>
         </>
       ) : (
-        <ThemedView style={[styles.serverResponse,]}>
-        <ThemedText style={{textAlign:'center'}}>
+        <View style={[styles.serverResponse,]}>
+        <Text style={[styles.errResText]}>
           There was an issue fetching past signals. Please try again later.
-        </ThemedText>
-        </ThemedView>
+        </Text>
+        </View>
       )}
-    </ThemedView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  serverResponse:{
+  buttonHolder: {
+    flexDirection:'row',
+    marginTop: 10,
     width:'100%',
-    justifyContent:'center',
+    justifyContent:'space-between',
+    alignItems:'center'
+  },
+  btn: {
+    marginTop:5,
+    // marginBottom:5,
+    width:'45%',
+    color: 'white',
+    borderWidth:1,
+    borderColor:'red',
+    height: 40,
+    borderRadius:10,
     alignItems:'center',
+    justifyContent:'center'
+  },
+  text: {
+    color: '#fff',
+    opacity:0.6
+  },
+  serverResponse: {
+   flex:1,
+    width:'100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1,
+    borderColor:'red',
+    backgroundColor:'#121212'
+  },
+  errResText:{
+    color:'#e74c3c',
+    fontSize:20,
+    fontWeight:'600',
+    textAlign:'center'
   },
   paginationHolder: {
     marginTop: 20,
+    // minHeight:'100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth:1,
+    borderColor:'red',
+    backgroundColor:'#121212'
   },
-  buttonHolder: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  button: {
-    marginHorizontal: 10,
-    padding: 10,
-    backgroundColor: 'blue',
-    borderRadius: 5,
-  },
+  
 });
 
 export default QueryData;

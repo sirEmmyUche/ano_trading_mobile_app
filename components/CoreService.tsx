@@ -1,4 +1,4 @@
-import { StyleSheet,Pressable,Image,Text,View} from 'react-native';
+import { StyleSheet,Pressable,Image,Text,View,Platform} from 'react-native';
 import { Link } from 'expo-router';
 
 export default function CoreService(){
@@ -7,7 +7,7 @@ export default function CoreService(){
         <View style={[styles.coreServiceParentWrapper,]}>
           <Text  style={styles.coreServiceTitle}>Services</Text>
           <View style={styles.serviceContentParent}>
-            <Pressable style={[styles.serviceItem,styles.boxShadow]}>
+            <Pressable style={[styles.serviceItem,]}>
               <View style={styles.imageBox}>
                 <Image source={require('@/assets/images/signal-2-img-mobile.png')} 
                 style={styles.image} resizeMode="contain" />
@@ -58,11 +58,18 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
       },
       boxShadow:{
-        shadowColor:"#cccccc",
-        shadowOffset:{width:-3, height:3},
-        shadowOpacity:1,
-        shadowRadius:1,
-        elevation:3,
+        ...Platform.select({
+          ios:{
+        shadowColor: "#cccccc",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 1,
+        shadowRadius: 1,
+          },
+          android:{
+            shadowColor: "#cccccc",
+            elevation:3,
+          }
+        })
       },
       serviceTextView: {
         marginTop: 5,
@@ -84,8 +91,8 @@ const styles = StyleSheet.create({
         // height: 100, // Set a fixed height for images
       },
       serviceItem: {
-        // borderWidth: 1,
-        // borderColor: 'blue',
+        borderWidth: 1,
+        borderColor: 'transparent',
         width: '30%',
         alignItems: 'center',
         marginBottom: 10, // Add some spacing between items

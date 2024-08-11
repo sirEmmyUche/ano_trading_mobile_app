@@ -9,7 +9,7 @@ export default function HomeLayout() {
         }}>
       <Stack.Screen name="index" options={{title:'Home'}} />
       <Stack.Screen name="how_to_use_signals"
-      options={{title:'Using Signals', headerShown:true,}} />
+      options={{title:'Signal Eduaction', headerShown:true,}} />
     </Stack>
   );
 }

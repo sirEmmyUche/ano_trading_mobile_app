@@ -1,123 +1,123 @@
 import React, { useState } from 'react';
 import QueryData from './queryData'
-import { ThemedText } from './ThemedText';
-import { ThemedView } from './ThemedView';
-import { StyleSheet, Image, ViewStyle, Pressable } from 'react-native';
+import { StyleSheet, Image, ViewStyle, Pressable, View, Text, 
+  Platform,
+  ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import { statusColor } from '../constants/statusColor'
-import { useShadowColor } from './useShadowBox';
 import { IoniconsTabBarIcon, MaterialTabBarIcon, OcticonsTabBarIcon } from './navigation/TabBarIcon'
 
 interface LiveSignalProps {
   signalAPI: (page: number) => Promise<any>; 
 }
-
 const LiveSignal = ({ signalAPI }: LiveSignalProps) => {
-  const shadowStyle = useShadowColor();
   const [filter, setFilter] = useState('all');
-
   const renderData = (data: any) => {
     const filteredSignals = filter === 'all' ? data.signals : 
     data.signals.filter((signal: any) => signal.status === filter);
 
     return (
-      <ThemedView style={[styles.parentContainer]}>
-        <ThemedView style={styles.filterContainer}>
+      <ScrollView>
+      <View style={[styles.parentContainer]}>
+        <View style={styles.filterContainer}>
           <Pressable onPress={() => setFilter('all')} style={styles.filterButton}>
             <MaterialTabBarIcon name="select-all" size={24} color={filter === 'all' ? 'orange' : 'white'} />
-            <ThemedText>All</ThemedText>
+            <Text>All</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('pending')} style={styles.filterButton}>
             <MaterialTabBarIcon name="pending" size={24} color={filter === 'pending' ? 'orange' : 'white'} />
-            <ThemedText>Pending</ThemedText>
+            <Text>Pending</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('active')} style={styles.filterButton}>
             <MaterialTabBarIcon name="notifications-active" size={24} color={filter === 'active' ? 'orange' : 'white'} />
-            <ThemedText>Active</ThemedText>
+            <Text>Active</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('completed')} style={styles.filterButton}>
             <OcticonsTabBarIcon name="issue-closed" size={24} color={filter === 'completed' ? 'orange' : 'white'} />
-            <ThemedText>Completed</ThemedText>
+            <Text>Completed</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('closed')} style={styles.filterButton}>
             <IoniconsTabBarIcon name="stop-circle-outline" size={30} color={filter === 'closed' ? 'orange' : 'white'} />
-            <ThemedText>Closed</ThemedText>
+            <Text>Closed</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('deleted')} style={styles.filterButton}>
             <MaterialTabBarIcon name="delete" size={24} color={filter === 'deleted' ? 'orange' : 'white'} />
-            <ThemedText>Deleted</ThemedText>
+            <Text>Deleted</Text>
           </Pressable>
-        </ThemedView>
+        </View>
         {filteredSignals.map((signal: any) => (
-          <ThemedView key={signal._id} style={[styles.card, shadowStyle]}>
-            <ThemedView style={[styles.signalChartParent]}>
-              <ThemedView style={[styles.imageBox,]}>
-                <Image source={{ uri: `https://e497-105-112-219-148.ngrok-free.app/${signal.signalChart.chart.before}` }}
+          <View key={signal._id} style={[styles.card,styles.boxShadow]}>
+            <View style={[styles.signalChartParent,styles.boxShadow]}>
+              <View style={[styles.imageBox]}>
+                <Image source={{ uri: `${signal.signalChart.before}` }}
                   style={[styles.image]}
+                  resizeMode='stretch'
                 />
-              </ThemedView>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Market:</ThemedText>
-              <ThemedText style={[styles.cardContentText]}>{signal.marketType}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Name:</ThemedText>
-              <ThemedText style={[styles.cardContentText]}>{signal.instrumentName}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Symbol:</ThemedText>
-              <ThemedText style={[styles.cardContentText, { textTransform: 'uppercase' }]}>
-                {signal.instrumentSymbol}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Execution Type:</ThemedText>
-              <ThemedText style={signal.executionType === 'buy limit' || signal.executionType === 'buy stop' ?
+              </View>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Market:</Text>
+              <Text style={[styles.cardContentText,styles.text]}>{signal.marketType}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Name:</Text>
+              <Text style={[styles.cardContentText,styles.text]}>{signal.instrumentName}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Symbol:</Text>
+              <Text style={[styles.cardContentText,,styles.text,{ textTransform: 'uppercase' }]}>
+                {signal.instrumentSymbol}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Execution Type:</Text>
+              <Text style={signal.executionType === 'buy limit' || signal.executionType === 'buy stop' ?
                 [styles.cardContentText, { color: '#28ce30' }] : [styles.cardContentText, { color: '#e73c7e' }]}>
-                {signal.executionType}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Status:</ThemedText>
-              <ThemedText type='defaultSemiBold' style={[styles.cardContentText,
+                {signal.executionType}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Status:</Text>
+              <Text style={[styles.cardContentText, {color:'#fff',fontWeight:'400'},
                 statusColor(signal.status) as ViewStyle
-              ]}>{signal.status}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>First entry:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.entryPrice.price.firstEntryPrice}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Second entry:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.entryPrice.price.secondEntryPrice}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>First take profit:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.takeProfit.target.tp1}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Second take profit:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.takeProfit.target.tp2}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Final take profit:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.takeProfit.target.finalTp}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Stop loss:</ThemedText>
-              <ThemedText style={[styles.cardContentText]} selectable={true}>
-                {signal.stopLoss}</ThemedText>
-            </ThemedView>
-            <ThemedView style={[styles.cardContentView]}>
-              <ThemedText>Note:</ThemedText>
-              <ThemedText style={[styles.cardContentText]}>{signal.note}</ThemedText>
-            </ThemedView>
-          </ThemedView>
+              ]}>{signal.status}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>First entry:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.entryPrice.price.firstEntryPrice}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Second entry:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.entryPrice.price.secondEntryPrice}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>First take profit:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.takeProfit.target.tp1}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Second take profit:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.takeProfit.target.tp2}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Final take profit:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.takeProfit.target.finalTp}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Stop loss:</Text>
+              <Text style={[styles.cardContentText,styles.text]} selectable={true}>
+                {signal.stopLoss}</Text>
+            </View>
+            <View style={[styles.cardContentView]}>
+              <Text style={[styles.text]}>Note:</Text>
+              <Text style={[styles.cardContentText,styles.text]}>{signal.note}</Text>
+            </View>
+          </View>
         ))}
-      </ThemedView>
+      </View>
+      </ScrollView>
+     
     );
   };
 
@@ -129,11 +129,16 @@ const LiveSignal = ({ signalAPI }: LiveSignalProps) => {
 export default LiveSignal;
 
 const styles = StyleSheet.create({
+  safeArea:{
+    // flex:1,
+    marginTop:StatusBar.currentHeight
+  },
   parentContainer: {
     width: '100%',
     borderWidth: 1,
     borderColor: 'transparent',
-    flexDirection: 'column',
+    backgroundColor:'#121212',
+    flexDirection:'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -149,9 +154,9 @@ const styles = StyleSheet.create({
   },
   signalChartParent: {
     width: '100%',
-    height:100,
+    // height:100,
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: 'transparent',
     padding: 10,
     marginBottom: '5%',
     flexDirection: 'row',
@@ -160,22 +165,37 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    // height:'100%',
-    flex:1,
-    // aspectRatio:1,
-    resizeMode: 'contain',
+    height:100,
   },
   imageBox: {
-    borderColor: 'yellow',
-    borderWidth: 1,
-    width: '70%',
-    height: '100%',
-    alignItems: 'center'
-  },
-  card: {
+    borderColor: 'transparent',
     borderWidth: 1,
     width: '100%',
-    margin: 20,
+    height: 120,
+    alignItems: 'center',
+    justifyContent:'center',
+    padding:10
+  },
+  card: {
+    width: '90%',
+    margin:4,
+    padding: 10,
+    borderWidth:1,
+    borderColor:'transparent'
+  },
+  boxShadow:{
+    ...Platform.select({
+      ios:{
+    shadowColor: "#cccccc",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+      },
+      android:{
+        shadowColor: "#cccccc",
+        elevation:3,
+      }
+    })
   },
   cardContentView: {
     flexDirection: 'row',
@@ -184,6 +204,10 @@ const styles = StyleSheet.create({
   cardContentText: {
     marginLeft: 5,
   },
+  text: {
+    color: '#fff',
+    opacity:0.6
+  }
 });
 
 

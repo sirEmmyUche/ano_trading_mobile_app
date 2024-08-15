@@ -15,7 +15,7 @@ export default function CoreService(){
               <Link href={'/how_to_use_signals'}>
               <Text style={styles.serviceTextSubtitle}>Signals</Text></Link>
             </Pressable>
-            <Pressable style={[styles.serviceItem,styles.boxShadow]}>
+            <Pressable style={[styles.serviceItem,]}>
               <View style={styles.imageBox}>
                 <Image source={require('@/assets/images/signal-4-img-mobile.png')} 
                 style={styles.image} resizeMode="contain" />
@@ -24,7 +24,7 @@ export default function CoreService(){
                 <Text style={styles.serviceTextSubtitle}>Trainings</Text>
               </Link>
             </Pressable>
-              <Pressable style={[styles.serviceItem,styles.boxShadow]}>
+              <Pressable style={[styles.serviceItem,]}>
               <View style={styles.imageBox}>
                 <Image source={require('@/assets/images/signal-3-img-mobile.png')} 
                 style={styles.image} resizeMode="contain" />
@@ -78,15 +78,15 @@ const styles = StyleSheet.create({
       },
       image: {
         width: '100%',
-        height:50,
-        aspectRatio: 1,
+        height:35,
+        // aspectRatio: 1,
       },
       imageBox: {
         borderColor: 'transparent',
         borderWidth: 1,
         alignItems:'center',
         padding:10,
-        margin: 5,
+        // margin: 5,
         width: '100%',
         // height: 100, // Set a fixed height for images
       },

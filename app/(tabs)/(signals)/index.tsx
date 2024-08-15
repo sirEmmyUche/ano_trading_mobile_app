@@ -20,7 +20,7 @@ export default function SignalScreen() {
               </View>
               <Text style={[styles.title]}>Live Signals</Text>
               <Link href={'/how_to_use_signals'}>
-                <Text style={[styles.default]}>Kindly read this before taking signals</Text>
+                <Text style={[styles.default,{color:'#27AE60'}]}>Click here before taking signals.</Text>
               </Link>
               <Pressable style={[styles.iconMainWrapper]}>
               <Link href={'/forex'} asChild>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   iconBtn:{
     width:'25%',
     borderWidth:1,
-    borderColor:'blue',
+    borderColor:'transparent',
     alignItems:'center',
     justifyContent:'center'
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     padding:10,
     height:200,
     borderWidth:1,
-    borderColor:'red',
+    borderColor:'transparent',
   },
   imageWrapper:{
     padding:15,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getPastSignals } from '@/APIs';
 import { StyleSheet, Image, View, Text, ViewStyle, Platform,
-  Pressable, Dimensions } from 'react-native';
+  Pressable, Dimensions,ActivityIndicator } from 'react-native';
 import { statusColor } from '../constants/statusColor';
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
@@ -20,7 +20,8 @@ export default function PastSignal() {
   if (isLoading) {
     return (
       <View style={[styles.serverResponse]}>
-        <Text style={{ textAlign: 'center',color:'#fff' }}>Loading...</Text>
+         <ActivityIndicator size="large" color="#0000ff" />
+        {/* <Text style={{ textAlign: 'center',color:'#fff' }}>Loading...</Text> */}
       </View>
     );
   }

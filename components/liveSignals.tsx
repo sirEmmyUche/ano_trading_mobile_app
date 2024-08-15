@@ -13,41 +13,45 @@ const LiveSignal = ({ signalAPI }: LiveSignalProps) => {
   const [filter, setFilter] = useState('all');
   const renderData = (data: any) => {
     const filteredSignals = filter === 'all' ? data.signals : 
-    data.signals.filter((signal: any) => signal.status === filter);
+    data.signals.filter((signal:any) => signal.status === filter);
 
     return (
       <ScrollView>
       <View style={[styles.parentContainer]}>
         <View style={styles.filterContainer}>
           <Pressable onPress={() => setFilter('all')} style={styles.filterButton}>
-            <MaterialTabBarIcon name="select-all" size={24} color={filter === 'all' ? 'orange' : 'white'} />
-            <Text>All</Text>
+            <MaterialTabBarIcon name="select-all" size={30} color={filter === 'all' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='all'?'orange':'#fff'}]}>All</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('pending')} style={styles.filterButton}>
-            <MaterialTabBarIcon name="pending" size={24} color={filter === 'pending' ? 'orange' : 'white'} />
-            <Text>Pending</Text>
+            <MaterialTabBarIcon name="pending" size={30} color={filter === 'pending' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='pending'?'orange':'#fff'}]}>Pending</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('active')} style={styles.filterButton}>
-            <MaterialTabBarIcon name="notifications-active" size={24} color={filter === 'active' ? 'orange' : 'white'} />
-            <Text>Active</Text>
+            <MaterialTabBarIcon name="notifications-active" size={30} color={filter === 'active' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='active'?'orange':'#fff'}]}>Active</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('completed')} style={styles.filterButton}>
-            <OcticonsTabBarIcon name="issue-closed" size={24} color={filter === 'completed' ? 'orange' : 'white'} />
-            <Text>Completed</Text>
+            <OcticonsTabBarIcon name="issue-closed" size={30} color={filter === 'completed' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='completed'?'orange':'#fff'}]}>Completed</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('closed')} style={styles.filterButton}>
-            <IoniconsTabBarIcon name="stop-circle-outline" size={30} color={filter === 'closed' ? 'orange' : 'white'} />
-            <Text>Closed</Text>
+            <IoniconsTabBarIcon name="stop-circle-outline" size={30} color={filter === 'closed' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='closed'?'orange':'#fff'}]}>Closed</Text>
           </Pressable>
           <Pressable onPress={() => setFilter('deleted')} style={styles.filterButton}>
-            <MaterialTabBarIcon name="delete" size={24} color={filter === 'deleted' ? 'orange' : 'white'} />
-            <Text>Deleted</Text>
+            <MaterialTabBarIcon name="delete" size={30} color={filter === 'deleted' ? 'orange' : '#fff'} />
+            <Text style={[{color:filter==='deleted'?'orange':'#fff'}]}>Deleted</Text>
           </Pressable>
         </View>
         {filteredSignals.map((signal: any) => (
           <View key={signal._id} style={[styles.card,styles.boxShadow]}>
             <View style={[styles.signalChartParent,styles.boxShadow]}>
               <View style={[styles.imageBox]}>
+                <View style={signal.status==='deleted'?[styles.isDeleted]:{display:'none'}}>
+                  <MaterialTabBarIcon name={'delete'}size={50} color={'#e74c3c'}/>
+                  <Text style={[{color:'#e74c3c', fontSize:18, fontWeight:'600'}]}>Deleted</Text>
+                </View>
                 <Image source={{ uri: `${signal.signalChart.before}` }}
                   style={[styles.image]}
                   resizeMode='stretch'
@@ -134,9 +138,9 @@ const styles = StyleSheet.create({
     marginTop:StatusBar.currentHeight
   },
   parentContainer: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: 'transparent',
+    width:'100%',
+    borderWidth: 5,
+    borderColor: 'green',
     backgroundColor:'#121212',
     flexDirection:'column',
     justifyContent: 'center',
@@ -146,11 +150,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap:'wrap',
     justifyContent: 'space-around',
+    alignItems:'center',
+    alignContent:'center',
     width: '100%',
     marginBottom: 10,
+    height:130,
   },
   filterButton: {
     alignItems: 'center',
+    justifyContent:'center',
+    // borderWidth:1,
+    // borderColor:'red'
   },
   signalChartParent: {
     width: '100%',
@@ -167,7 +177,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height:100,
   },
-  imageBox: {
+  isDeleted:{
+    position:'absolute',
+    zIndex:3,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  imageBox:{
+    position:'relative',
     borderColor: 'transparent',
     borderWidth: 1,
     width: '100%',

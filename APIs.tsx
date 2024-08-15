@@ -1,5 +1,5 @@
 
-const baseUrl:string = 'https://d74d-102-89-22-59.ngrok-free.app'  
+const baseUrl:string = 'https://67d6-105-112-214-245.ngrok-free.app'  
 // const baseUrl:string = 'http://localhost:3000'; 
 
 export const signUp = async (formData:any): Promise<any>=>{
@@ -77,7 +77,7 @@ export const pricingAPI = async()=>{
         return data;
 
     }catch(error){
-        console.error('pastSignals:',error)
+        console.error('Pricing:',error)
     }
 }
 export const initializePayment = async (paymentData:any)=>{

@@ -1,7 +1,8 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
-import { Pressable, StyleSheet,Text,View} from 'react-native';
+import { Pressable, StyleSheet,Text,View,ActivityIndicator} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialCommunity } from "./navigation/TabBarIcon";
 
 interface QueryDataProps {
   apiFunction: (page: number) => Promise<any>;
@@ -20,7 +21,8 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
   if (isLoading) {
     return (
       <View style={[styles.serverResponse,]}>
-        <Text style={[styles.errResText]}>Loading...</Text>
+         <ActivityIndicator size="large" color="#0000ff" />
+        {/* <Text style={[styles.errResText]}>Loading...</Text> */}
       </View>
     );
   }
@@ -57,7 +59,7 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
   const hasSignals = data.status === 'success' && data.signals.length > 0;
 
   return (
-    <View>
+    <View style={[styles.mainContainer]}>
       {hasSignals ? (
         <>
           {renderData(data)}
@@ -69,7 +71,15 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
                 onPress={() => setPage((old) => Math.max(old - 1, 0))}
                 disabled={page === 0}
               >
-                <Text>Previous</Text>
+                <LinearGradient
+                  colors={page !== 0?
+                    [ '#27AE60','#2471A3',]:['#aaaaaa','#cccccc']}
+                  style={page !== 0?[styles.gradient]:[styles.gradient,{opacity:0.5}]}
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  >
+                 <Text style={[styles.btnTxt]}>Previous</Text>
+              </LinearGradient>
               </Pressable>
               <Pressable
                 style={styles.btn}
@@ -80,7 +90,20 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
                 }}
                 disabled={isPlaceholderData || !data?.hasMore}
               >
-                <Text>Next</Text>
+                <LinearGradient
+                  colors={isPlaceholderData || data?.hasMore?
+                    [ '#27AE60','#2471A3',]:['#aaaaaa','#cccccc']}
+                  style={isPlaceholderData || data?.hasMore
+                    ?[styles.gradient]:[styles.gradient,{opacity:0.5}]}
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  >
+                 <Text style={[styles.btnTxt]}>
+                  {isPlaceholderData || data?.hasMore?'Next':
+                  <MaterialCommunity name={'cancel'} size={24} color={'#e74c3c'}/>
+                  }
+                  </Text>
+              </LinearGradient>
               </Pressable>
             </View>
             <Text style={[styles.text]}>{isFetching ? 'Loading...' : null}</Text>
@@ -98,6 +121,20 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
 };
 
 const styles = StyleSheet.create({
+  mainContainer:{
+    backgroundColor:'red',
+  },
+  btnTxt:{
+    color:'#fff',
+    fontWeight:'600'
+  },
+  gradient:{
+    flex:1, 
+    borderRadius:10,
+    width:'100%',
+    alignItems:'center',
+    justifyContent:'center'
+  },
   buttonHolder: {
     flexDirection:'row',
     marginTop: 10,
@@ -111,7 +148,7 @@ const styles = StyleSheet.create({
     width:'45%',
     color: 'white',
     borderWidth:1,
-    borderColor:'red',
+    borderColor:'transparent',
     height: 40,
     borderRadius:10,
     alignItems:'center',
@@ -127,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth:1,
-    borderColor:'red',
+    borderColor:'transparent',
     backgroundColor:'#121212'
   },
   errResText:{
@@ -141,8 +178,8 @@ const styles = StyleSheet.create({
     // minHeight:'100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth:1,
-    borderColor:'red',
+    borderWidth:2,
+    borderColor:'blue',
     backgroundColor:'#121212'
   },
   

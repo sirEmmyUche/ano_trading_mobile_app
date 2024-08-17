@@ -48,6 +48,13 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow AnoTrade to access your photos",
+          "cameraPermission":"Allow AnoTrade to access your camera"
+        }
       ]
     ],
     "experiments": {

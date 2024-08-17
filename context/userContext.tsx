@@ -15,12 +15,14 @@ const AuthContext = createContext<{
   googleAuth:(response:any)=>Promise<any>;
   session?: Session | null;
   isLoading: boolean;
+  setSession: (session: Session | null) => void; 
 }>({
   signIn: async () => null,
   signOut: () => null,
   googleAuth:async()=>null,
   session: null,
   isLoading: false,
+  setSession: () => {},
 });
 
 export function useSession() {
@@ -106,6 +108,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         googleAuth,
         session,
         isLoading,
+        setSession,
       }}>
       {children}
     </AuthContext.Provider>

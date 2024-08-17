@@ -3,7 +3,6 @@ import { StyleSheet, Animated, ImageBackground,
 import React, { useRef, useEffect } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { ViewStyle } from 'react-native';
-import { useShadowColor } from './useShadowBox';
 import { useSession } from '@/context/userContext';
 
 const { width } = Dimensions.get('window');
@@ -52,8 +51,7 @@ const AnimateBackgroundPics: React.FC<AnimateBackgroundPicsProps> = (props) => {
 export default function Welcome() {
   const colorScheme = useColorScheme();
   const overlayColor = colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
-  const shadowStyle = useShadowColor();
-  const {session} = useSession();
+  const {session,} = useSession();
   const usersName = session?.user.displayName
 
   return (

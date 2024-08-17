@@ -1,21 +1,33 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform,View, Pressable, SafeAreaView} from 'react-native';
+import { StyleSheet, Image, Platform,View, ScrollView,StatusBar,
+  Pressable, SafeAreaView} from 'react-native';
 import Logout from '../../components/logout'
+import Avi from '@/components/userAvi';
 
 export default function TabSettingsScreen() {
   return(
     <SafeAreaView style={[styles.safeArea]}>
-      <View style={[styles.safeArea,{justifyContent:'center'}]}>
+      <ScrollView contentContainerStyle={[styles.scrollview]}>
+      <View>
+        <Pressable>
+          <Avi/>
+        </Pressable>
         <Pressable>
           <Logout/>
         </Pressable>
-    </View>
+      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  scrollview:{
+    backgroundColor:'#121212',
+    minHeight:'100%',
+  },
   safeArea:{
-    flex:1
+    flex:1,
+    marginTop:StatusBar.currentHeight
   }
 })

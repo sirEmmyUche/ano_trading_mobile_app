@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   button:{
     // backgroundColor:'#00BFFF',
-    backgroundColor:'grey',
+    backgroundColor:'#2C2D2D',
     borderRadius:5,
     padding:8,
     justifyContent:'center',

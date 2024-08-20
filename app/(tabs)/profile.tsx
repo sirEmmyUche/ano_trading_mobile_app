@@ -16,8 +16,8 @@ export default function TabSettingsScreen() {
           </Pressable>
           <Link href={'/pricing'} asChild>
             <Pressable>
-            <MaterialTabBarIcon name={'payment'} color={'#fff'} />
-            <Text>Subscription</Text>
+              <MaterialTabBarIcon name={'payment'} color={'#fff'} />
+              <Text>Subscription</Text>
             </Pressable>
           </Link>
           <Pressable>

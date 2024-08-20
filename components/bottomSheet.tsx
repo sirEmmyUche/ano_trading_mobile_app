@@ -106,10 +106,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   iconContainer: {
-    borderWidth: 1,
+    borderWidth:1,
     borderColor: 'transparent',
-    width: SCREEN_WIDTH,
-    height: '100%',
+    width:SCREEN_WIDTH,
+    height:'100%',
+    // zIndex:99999,
   },
   iconButton: {
     flexDirection: 'row',

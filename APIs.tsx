@@ -1,5 +1,5 @@
 
-const baseUrl:string = 'https://1ecb-105-112-217-253.ngrok-free.app'  
+const baseUrl:string = 'https://67c9-105-112-213-217.ngrok-free.app'  
 // const baseUrl:string = 'http://localhost:3000'; 
 
 export const signUp = async (formData:any): Promise<any>=>{

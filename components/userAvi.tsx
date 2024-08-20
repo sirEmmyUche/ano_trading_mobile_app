@@ -1,43 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Pressable, Image, StyleSheet,Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 import { IoniconsTabBarIcon } from './navigation/TabBarIcon';
 import BottomSheet from './bottomSheet';
+import {deleteAvi } from '@/APIs';
 import { useSession } from '@/context/userContext';
 
 export default function Avi() {
-  const [image, setImage] = useState<any>(null);
+  const [errMsg, setErrMsg] = useState<string|null>(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [useCameraPermission, requestUseCameraPermission] = ImagePicker.useCameraPermissions();
   const [accessMediaPermission, requestAccessMediaPermission] = ImagePicker.useMediaLibraryPermissions();
-  const {session} = useSession();
+  const {session, setSession} = useSession();
   const userEmail = session?.user.email;
+  const baseUrl = 'https://a1ac-105-112-221-92.ngrok-free.app'
+  const id = session?.user.id;
   const userName = session?.user.displayName;
   const profilePics = session?.user.profilePics;
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (errMsg){
+      timer = setTimeout(() => {
+        setErrMsg(null);
+      },4000);
+    }
+    return () => clearTimeout(timer);
+  }, [errMsg]);
+
   const useCamera = async () => {
-    setBottomSheetVisible(false); // Close the bottom sheet
+    setBottomSheetVisible(false); 
     const isCameraAllowed = await ImagePicker.getCameraPermissionsAsync();
     if(!isCameraAllowed.granted){
       let allow = await requestUseCameraPermission();
       if(allow.granted){
         let cameraImage = await ImagePicker.launchCameraAsync();
         if(!cameraImage.canceled){
-          setImage(cameraImage.assets[0].uri);
+        try{
+            const uploadResult = await FileSystem.uploadAsync(
+                `${baseUrl}/api/user/avi?id=${id}`,cameraImage.assets[0].uri,{
+                       httpMethod: 'POST',
+                       fieldName:'user_profile_pics',
+                       uploadType:FileSystem.FileSystemUploadType.MULTIPART
+                 });
+                 if(uploadResult.status === 200){
+                    const parsedBody = JSON.parse(uploadResult.body);
+                    setSession({
+                        ...session,
+                        user:{
+                            ...session?.user,
+                            profilePics: parsedBody.profilePics, 
+                        },
+                    });
+                 }
+        }catch(error){
+            setErrMsg('failed to upload')
+            // console.error(error)
+        }
         }
       }
     } else{
       let cameraImage = await ImagePicker.launchCameraAsync();
-      if (!cameraImage.canceled) {
-        setImage(cameraImage.assets[0].uri);
+      if (!cameraImage.canceled){
+        try{
+            const uploadResult = await FileSystem.uploadAsync(
+                `${baseUrl}/api/user/avi?id=${id}`,cameraImage.assets[0].uri, {
+                       httpMethod: 'POST',
+                       fieldName:'user_profile_pics',
+                       uploadType:FileSystem.FileSystemUploadType.MULTIPART
+                 });
+                 if(uploadResult.status === 200){
+                    const parsedBody = JSON.parse(uploadResult.body);
+                    // console.log('parsedBody:', parsedBody.profilePics);
+                    setSession({
+                        ...session,
+                        user:{
+                            ...session?.user,
+                            profilePics: parsedBody.profilePics, 
+                        },
+                    });
+                 }
+        }catch(error){
+            // console.error(error)
+            setErrMsg('failed to upload')
+        }
       }
     }
   };
 
   const pickImageFromGallery = async () => {
-    setBottomSheetVisible(false); // Close the bottom sheet
+    setBottomSheetVisible(false);
     const isGalleryAccessAllowed = await ImagePicker.getMediaLibraryPermissionsAsync();
-    if (!isGalleryAccessAllowed.granted || isGalleryAccessAllowed.status === 'denied') {
+    if(!isGalleryAccessAllowed.granted || isGalleryAccessAllowed.status === 'denied'){
       let giveAccess = await requestAccessMediaPermission();
       if(giveAccess.granted) {
         let galleryImage = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +101,29 @@ export default function Avi() {
           aspect: [4, 3],
         });
         if(!galleryImage.canceled){
-            setImage(galleryImage.assets[0].uri);
+            try{
+                const uploadResult = await FileSystem.uploadAsync(
+                 `${baseUrl}/api/user/avi?id=${id}`,galleryImage.assets[0].uri, {
+                        httpMethod: 'POST',
+                        fieldName:'user_profile_pics',
+                        uploadType:FileSystem.FileSystemUploadType.MULTIPART
+                  });
+            
+                  if(uploadResult.status === 200){
+                    const parsedBody = JSON.parse(uploadResult.body);
+                    // console.log('parsedBody:', parsedBody.profilePics);
+                    setSession({
+                        ...session,
+                        user:{
+                            ...session?.user,
+                            profilePics: parsedBody.profilePics,  
+                        },
+                    });
+                 }
+            }catch(error){
+                // console.error('error:',error)
+                setErrMsg('failed to upload')
+            }
         }
       }
     } else {
@@ -56,17 +133,60 @@ export default function Avi() {
         aspect: [4, 3],
       });
       if(!galleryImage.canceled){
-        setImage(galleryImage.assets[0].uri);
+        try{
+            const uploadResult = await FileSystem.uploadAsync(
+                `${baseUrl}/api/user/avi?id=${id}`,galleryImage.assets[0].uri, {
+                       httpMethod: 'POST',
+                       fieldName:'user_profile_pics',
+                       uploadType:FileSystem.FileSystemUploadType.MULTIPART
+                 });
+           
+                 if(uploadResult.status === 200){
+                    const parsedBody = JSON.parse(uploadResult.body);
+                    // console.log('parsedBody:', parsedBody.profilePics);
+                    setSession({
+                        ...session,
+                        user:{
+                            ...session?.user,
+                            profilePics: parsedBody.profilePics,  
+                        },
+                    });
+                 }
+        }catch(error){
+            // console.error('error:',error)
+            setErrMsg('failed to upload')
+        }
     }
     }
   };
+
+  const handleDeleteAvi = async()=>{
+    try{
+        const res = await deleteAvi(id);
+        if(res.status==='success'){
+            setSession({
+                ...session,
+                user:{
+                    ...session?.user,
+                    profilePics:'',
+                },
+            });
+        }else{
+            setErrMsg('failed to delete.')
+        }
+    }catch(error){
+        setErrMsg('failed to delete.')
+         // console.error('error:',error)
+    }
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
         <View style={styles.imageBox}>
           <Image
-            source={image ? { uri: image }: require('../assets/images/bull-and-bear-1.jpg')}
+           source={profilePics && profilePics !== '' ? 
+            { uri: profilePics } : require('../assets/images/anonymous.png')}
             resizeMode="cover"
             style={styles.image}
           />
@@ -75,6 +195,7 @@ export default function Avi() {
           </Pressable>
         </View>
       </View>
+      {errMsg && <Text style={[styles.errMsg]}>{errMsg}</Text>}
       <Text style={[styles.nameText]}>{userName}</Text>
       <Text style={[styles.emailText]}>{userEmail}</Text>
       <BottomSheet
@@ -82,6 +203,7 @@ export default function Avi() {
         onClose={() => setBottomSheetVisible(false)}
         onCameraPress={useCamera}
         onGalleryPress={pickImageFromGallery}
+        onDeleteAvi={handleDeleteAvi}
       />
     </View>
   );
@@ -94,12 +216,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
+    zIndex:5,
   },
   icon: {
-    position: 'absolute',
+    position:'absolute',
     bottom: 0,
     right: 0,
-    backgroundColor: 'blue',
+    backgroundColor:'#0096FF',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -113,7 +236,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -124,6 +247,9 @@ const styles = StyleSheet.create({
   },
   avatarWrapper: {
     position: 'relative',
+  },
+  errMsg:{
+    color:'#e74c3c'
   },
   emailText:{
     color:'#fff',

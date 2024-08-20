@@ -1,6 +1,7 @@
-
-const baseUrl:string = 'https://67c9-105-112-213-217.ngrok-free.app'  
+const baseUrl:string = 'https://a1ac-105-112-221-92.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
+
+//If you change the baseUrl here, always change it at userAvi.tsx for file upload
 
 export const signUp = async (formData:any): Promise<any>=>{
     const data = await fetch(`${baseUrl}/api/user/register`,{
@@ -77,7 +78,7 @@ export const pricingAPI = async()=>{
         return data;
 
     }catch(error){
-        console.error('Pricing:',error)
+        // console.error('Pricing:',error)
     }
 }
 export const initializePayment = async (paymentData:any)=>{
@@ -88,7 +89,7 @@ export const initializePayment = async (paymentData:any)=>{
             credentials: 'include',
     });
     const result = await data.json();
-    console.log('paymentData', result);
+    // console.log('paymentData', result);
     return result;
 }
 
@@ -101,7 +102,7 @@ export const getPastSignals = async()=>{
         return data;
 
     }catch(error){
-        console.error('pastSignals:',error)
+        // console.error('pastSignals:',error)
     }
 }
 
@@ -113,7 +114,7 @@ export const getForexSignals = async(page: number, filterStatus: string = 'all')
         const data = await res.json();
         return data;
     } catch (error) {
-        console.error('forexSignals:', error);
+        // console.error('forexSignals:', error);
     }
 }
 
@@ -127,7 +128,7 @@ export const getCryptoSignals = async(page:number)=>{
         return data;
 
     }catch(error){
-        console.error('cryptoSignals:',error)
+        // console.error('cryptoSignals:',error)
     }
 }
 
@@ -140,6 +141,21 @@ export const getStockSignals = async(page:number)=>{
         return data;
 
     }catch(error){
-        console.error('stockSignals:',error)
+        // console.error('stockSignals:',error)
     }
 }
+
+
+export const deleteAvi = async(id:string)=>{
+    try{
+        const res = await fetch(`${baseUrl}/api/user/avi/delete?id=${id}`,{
+            method:'delete'
+        });
+        const data = await res.json();
+        return data;
+    }catch(error){
+        // console.error('deleteAvi error:',error)
+        return error;
+    }
+}
+

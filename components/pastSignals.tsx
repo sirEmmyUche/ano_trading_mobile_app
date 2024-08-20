@@ -7,7 +7,7 @@ import { statusColor } from '../constants/statusColor';
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 
-export default function PastSignal() {
+export default function PastSignal(){
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ['signals'],
     queryFn: getPastSignals,
@@ -17,7 +17,7 @@ export default function PastSignal() {
 
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  if (isLoading) {
+  if(isLoading) {
     return (
       <View style={[styles.serverResponse]}>
          <ActivityIndicator size="large" color="#0000ff" />
@@ -85,7 +85,7 @@ export default function PastSignal() {
                       />
                     </View>
                     <View>
-                      <Text style={{ color: '#e73c7e' }}>Before</Text>
+                      <Text style={{ color:'#e73c7e'}}>Before</Text>
                     </View>
                   </View>
                   <View style={[styles.signalChartChild,styles.boxShadow,]}>

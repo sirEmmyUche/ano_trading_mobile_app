@@ -14,15 +14,17 @@ export default function TabSettingsScreen() {
           <Pressable style={[styles.aviWrapper]}>
             <Avi />
           </Pressable>
-          <Link href={'/pricing'} asChild>
+          <View style={[styles.otherComponents]}>
+          {/* <Link href={'/pricing'} asChild>
             <Pressable>
               <MaterialTabBarIcon name={'payment'} color={'#fff'} />
               <Text>Subscription</Text>
             </Pressable>
-          </Link>
+          </Link> */}
           <Pressable>
             <Logout />
           </Pressable>
+          </View>
         </View>
       {/* </ScrollView> */}
     </SafeAreaView>
@@ -41,10 +43,16 @@ const styles = StyleSheet.create({
     borderColor:'blue',
   },
   aviWrapper:{
-    flex:2,
+    flex:1,
     borderWidth:1,
     borderColor:'red',
   },
+  // otherComponents:{
+  //   flex:2,
+  //   borderWidth:1,
+  //   borderColor:'blue',
+  //   padding:15,
+  // },
   container:{
     backgroundColor: '#121212',
     flex:1,

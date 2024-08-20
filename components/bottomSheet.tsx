@@ -7,11 +7,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const {height: SCREEN_HEIGHT } = Dimensions.get('window');
-const MAX_TRANSLATE_Y = SCREEN_HEIGHT / 3;
+const MAX_TRANSLATE_Y = SCREEN_HEIGHT /2;
 const MIN_TRANSLATE_Y = 0;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export default function BottomSheet({ visible, onClose, onCameraPress, onGalleryPress }: any) {
+export default function BottomSheet({visible,onClose,onCameraPress,onGalleryPress,onDeleteAvi,}:any){
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
 
@@ -46,7 +46,7 @@ export default function BottomSheet({ visible, onClose, onCameraPress, onGallery
   useEffect(() => {
     // console.log('BottomSheet visibility:', visible);
     if (visible) {
-      scrollTo(-SCREEN_HEIGHT / 3);
+      scrollTo(-SCREEN_HEIGHT / 2);
     } else {
       scrollTo(SCREEN_HEIGHT);
     }
@@ -70,6 +70,10 @@ export default function BottomSheet({ visible, onClose, onCameraPress, onGallery
                 <Ionicons name="camera-outline" size={30} color="#fff" />
                 <Text style={[styles.iconText]}>Take a photo</Text>
               </Pressable>
+              <Pressable onPress={onDeleteAvi} style={styles.iconButton}>
+                <MaterialIcons name="delete" size={30} color="#fff" />
+                <Text style={[styles.iconText]}>Delete photo</Text>
+              </Pressable>
             </View>
           </Pressable>
         </Animated.View>
@@ -92,9 +96,11 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT,
     backgroundColor:'#2C2D2D',
     top: SCREEN_HEIGHT / 1.5,
-    zIndex: 10,
+    zIndex:9,
     borderRadius: 25,
     paddingHorizontal: 10,
+    // position:'relative',
+    // right:0
   },
   line: {
     width: 75,

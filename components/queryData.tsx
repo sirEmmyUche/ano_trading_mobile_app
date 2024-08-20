@@ -32,7 +32,7 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
     return (
       <View style={[styles.serverResponse,]}>
         <Text style={[styles.errResText]}>
-          Unable to display past trades. Please try again later.
+          Unable to display signals. Please try again later.
         </Text>
       </View>
     );
@@ -112,7 +112,7 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
       ) : (
         <View style={[styles.serverResponse,]}>
         <Text style={[styles.errResText]}>
-          There was an issue fetching past signals. Please try again later.
+          There was an issue fetching signals. Please try again later.
         </Text>
         </View>
       )}

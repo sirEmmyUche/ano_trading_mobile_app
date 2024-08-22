@@ -4,6 +4,7 @@ import { StyleSheet, View, ScrollView, StatusBar,Text,
 import { Link } from 'expo-router';
 import Logout from '../../components/logout';
 import Avi from '@/components/userAvi';
+import Support from '@/components/support';
 import { MaterialTabBarIcon } from '@/components/navigation/TabBarIcon';
 
 export default function TabSettingsScreen() {
@@ -14,14 +15,17 @@ export default function TabSettingsScreen() {
           <Pressable style={[styles.aviWrapper]}>
             <Avi />
           </Pressable>
-          <View style={[styles.otherComponents]}>
-          {/* <Link href={'/pricing'} asChild>
-            <Pressable>
-              <MaterialTabBarIcon name={'payment'} color={'#fff'} />
-              <Text>Subscription</Text>
+          <View style={[styles.otherComponentWrapper]}>
+            <Pressable style={[styles.btn,styles.spaceLink]}>
+              <View style={[styles.iconBox]}>
+                <MaterialTabBarIcon name={'payment'} color={'#fff'} size={24} />
+              </View>
+              <Link href={'/pricing'}><Text style={[styles.textLink]}>Subscription</Text></Link>
             </Pressable>
-          </Link> */}
-          <Pressable>
+            <Pressable style={[styles.spaceLink]}>
+              <Support/>
+            </Pressable>
+          <Pressable style={[styles.spaceLink]}>
             <Logout />
           </Pressable>
           </View>
@@ -37,25 +41,47 @@ const styles = StyleSheet.create({
     // minHeight: '100%',
     flex:1,
   },
-  otherwrapper:{
-    flex:2,
-    borderWidth:1,
-    borderColor:'blue',
+  textLink:{
+    color:'#fff',
+    marginLeft:10,
+    fontWeight:'600',
+    // opacity:0.7
+  },
+  spaceLink:{
+    marginBottom:10,
+    marginTop:10
+  },
+  btn:{
+    flexDirection:'row',
+    alignItems:'center',
+    // borderWidth:1,
+    // borderColor:'red',
   },
   aviWrapper:{
-    flex:1,
-    borderWidth:1,
-    borderColor:'red',
+    // flex:1,
+    height:450,
+    marginBottom:15,
+    // borderWidth:1,
+    // borderColor:'red',
+    zIndex:999,
   },
-  // otherComponents:{
-  //   flex:2,
-  //   borderWidth:1,
-  //   borderColor:'blue',
-  //   padding:15,
-  // },
+  iconBox:{
+    justifyContent:'center',
+    alignItems:'center',
+    padding:5,
+    // borderWidth:1,
+    // borderColor:'blue',
+  },
+  otherComponentWrapper:{
+    // flex:2,
+    borderWidth:1,
+    borderColor:'transparent',
+    // padding:15,
+  },
   container:{
     backgroundColor: '#121212',
-    flex:1,
+    minHeight:'100%',
+    // flex:1,
   },
   safeArea: {
     flex: 1,
@@ -63,38 +89,3 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// import Ionicons from '@expo/vector-icons/Ionicons';
-// import { StyleSheet, Image, Platform,View, ScrollView,StatusBar,
-//   Pressable, SafeAreaView} from 'react-native';
-// import Logout from '../../components/logout'
-// import Avi from '@/components/userAvi';
-
-
-// export default function TabSettingsScreen() {
-//   return(
-//     <SafeAreaView style={[styles.safeArea]}>
-//       <ScrollView contentContainerStyle={[styles.scrollview]}>
-//       <View>
-//         <Pressable>
-//           <Avi/>
-//         </Pressable>
-//         <Pressable>
-//           <Logout/>
-//         </Pressable>
-//       </View>
-//       </ScrollView>
-//     </SafeAreaView>
-//   )
-// }
-
-// const styles = StyleSheet.create({
-//   scrollview:{
-//     backgroundColor:'#121212',
-//     minHeight:'100%',
-//   },
-//   safeArea:{
-//     flex:1,
-//     marginTop:StatusBar.currentHeight
-//   }
-// })

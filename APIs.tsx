@@ -1,4 +1,4 @@
-const baseUrl:string = 'https://a1ac-105-112-221-92.ngrok-free.app'; 
+const baseUrl:string = 'https://0b5b-105-112-221-92.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload

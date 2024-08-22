@@ -9,7 +9,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 export default function GoogleSignIn() {
   const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId: '384216782692-h06bl3pd6m1ntunk8is02k45746bd84v.apps.googleusercontent.com',
+    webClientId: '384216782692-00o6594fqrf7raur14h1gm77eq33pfih.apps.googleusercontent.com',
     androidClientId: '',
     iosClientId: '384216782692-n5suo5ncfdichc7d653cbaq2irmkra0c.apps.googleusercontent.com',
     scopes: ['openid', 'profile', 'email'],

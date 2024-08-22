@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AnoTrade",
-    "slug": "AnoTrade",
+    "slug": "anotrade",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -23,7 +23,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.Anotrade"
+      "package": "com.Anotrade",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "package": "com.Anotrade",
     "permissions": [
@@ -53,12 +56,21 @@
         "expo-image-picker",
         {
           "photosPermission": "Allow AnoTrade to access your photos",
-          "cameraPermission":"Allow AnoTrade to access your camera"
+          "cameraPermission": "Allow AnoTrade to access your camera"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "bf75dd29-a258-44e2-b222-cf41310a21ad"
+      }
+    },
+    "owner": "sir_emmy_uche"
   }
 }

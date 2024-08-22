@@ -43,8 +43,10 @@ export default function Logout(){
               </View>
             </View>
           </Modal>
-          <OcticonsTabBarIcon name={'sign-out'} color={'#fff'}/>
-          <Text style={[{color:'#fff',marginLeft:15,fontWeight:'600'}]}>Log Out</Text>
+          <View style={[styles.iconBox]}>
+            <OcticonsTabBarIcon name={'sign-out'} color={'#fff'} size={24}/>
+          </View>
+          <Text style={[{color:'#fff',fontWeight:'600',}]}>Log Out</Text>
         </Pressable>
       </View>
     )
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
   logOutWrapper:{
     width:'100%',
     flexDirection:'row',
-    borderWidth:1,
-    borderColor:'red',
+    // borderWidth:1,
+    // borderColor:'red',
     alignItems:'center'
   }, 
   button: {
@@ -91,6 +93,11 @@ const styles = StyleSheet.create({
     fontWeight:'600',
     textAlign:'center',
     fontSize:16,
+  },
+  iconBox:{
+    justifyContent:'center',
+    alignItems:'center',
+    padding:5,
   },
   iconWrapper:{
     borderWidth:1,

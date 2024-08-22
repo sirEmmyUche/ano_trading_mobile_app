@@ -14,7 +14,7 @@ export default function Avi() {
   const [accessMediaPermission, requestAccessMediaPermission] = ImagePicker.useMediaLibraryPermissions();
   const {session, setSession} = useSession();
   const userEmail = session?.user.email;
-  const baseUrl = 'https://a1ac-105-112-221-92.ngrok-free.app'
+  const baseUrl = 'https://0b5b-105-112-221-92.ngrok-free.app'
   const id = session?.user.id;
   const userName = session?.user.displayName;
   const profilePics = session?.user.profilePics;
@@ -66,7 +66,7 @@ export default function Avi() {
         try{
             const uploadResult = await FileSystem.uploadAsync(
                 `${baseUrl}/api/user/avi?id=${id}`,cameraImage.assets[0].uri, {
-                       httpMethod: 'POST',
+                       httpMethod:'POST',
                        fieldName:'user_profile_pics',
                        uploadType:FileSystem.FileSystemUploadType.MULTIPART
                  });
@@ -104,7 +104,7 @@ export default function Avi() {
             try{
                 const uploadResult = await FileSystem.uploadAsync(
                  `${baseUrl}/api/user/avi?id=${id}`,galleryImage.assets[0].uri, {
-                        httpMethod: 'POST',
+                        httpMethod:'POST',
                         fieldName:'user_profile_pics',
                         uploadType:FileSystem.FileSystemUploadType.MULTIPART
                   });

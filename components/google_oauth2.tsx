@@ -10,7 +10,7 @@ WebBrowser.maybeCompleteAuthSession();
 export default function GoogleSignIn() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: '384216782692-00o6594fqrf7raur14h1gm77eq33pfih.apps.googleusercontent.com',
-    androidClientId: '',
+    androidClientId:'384216782692-61d8ao8kpijjckldmslaglhu825tn9jv.apps.googleusercontent.com',
     iosClientId: '384216782692-n5suo5ncfdichc7d653cbaq2irmkra0c.apps.googleusercontent.com',
     scopes: ['openid', 'profile', 'email'],
   });
@@ -19,10 +19,32 @@ export default function GoogleSignIn() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
 
+  // useEffect(() => {
+  //   const handleAuth = async () => {
+  //     if(response?.type === 'error'){console.log('response:',response)}
+  //     if (response?.type === 'success') {
+  //       const { authentication } = response;
+  //       const errMsg = await googleAuth(authentication?.idToken || '');
+  //       if (errMsg) {
+  //         setErrorMessage(errMsg);
+  //       } else {
+  //         router.replace('../app/(tabs)/');
+  //         setErrorMessage('');
+  //       }
+  //     }
+  //   };
+  //   handleAuth();
+  // }, [response]);
   useEffect(() => {
     const handleAuth = async () => {
+      console.log('Auth response:', response);
+      if (response?.type === 'error') {
+        console.log('Auth error:', response.error);
+        setErrorMessage('Authentication failed. Please try again.');
+      }
       if (response?.type === 'success') {
         const { authentication } = response;
+        console.log('Authentication object:', authentication);
         const errMsg = await googleAuth(authentication?.idToken || '');
         if (errMsg) {
           setErrorMessage(errMsg);
@@ -34,6 +56,7 @@ export default function GoogleSignIn() {
     };
     handleAuth();
   }, [response]);
+  
 
   return (
     <View style={[styles.container]}>

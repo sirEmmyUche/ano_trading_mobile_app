@@ -1,6 +1,5 @@
-const baseUrl:string = 'https://0b5b-105-112-221-92.ngrok-free.app'; 
+const baseUrl:string = 'https://45ec-105-112-217-63.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
-
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
 
 export const signUp = async (formData:any): Promise<any>=>{
@@ -32,7 +31,8 @@ export const logIn = async (formData:{email:string,password:string}): Promise<an
 }
 
 export const googleOauth = async (response:any) => {
-    const { credential } = response;
+    try{
+        const { credential } = response;
       const data = await fetch('${baseUrl}/api/auth/google', {
         method: 'POST',
         headers: {
@@ -42,8 +42,11 @@ export const googleOauth = async (response:any) => {
         credentials:'include',
       });
       const result = await data.json();
-    //   console.log('googlelogin:',result)
+      console.log('googlelogin:',result)
       return result;
+    }catch(error){
+        console.error('google auth:', error)
+    }
   };
 
 export const logOut = async ()=>{
@@ -159,3 +162,18 @@ export const deleteAvi = async(id:string)=>{
     }
 }
 
+export const sendPushNotificationTokenToServer = async(token:string)=>{
+    try{
+        const data = await fetch(`${baseUrl}/api/store/pushtoken`,{
+            method:'post',
+            headers: {'Content-Type': 'application/json',},
+            body:JSON.stringify({token}),
+            credentials: 'include',
+    });
+    const result = await data.json();
+    console.log('token:', result);
+    return result;
+    }catch(error){
+        return error
+    }
+}

@@ -1,6 +1,8 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
-import { Pressable, StyleSheet,Text,View,ActivityIndicator} from 'react-native';
+import { Pressable, StyleSheet,Text,View,ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunity } from "./navigation/TabBarIcon";
 
@@ -59,11 +61,11 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
   const hasSignals = data.status === 'success' && data.signals.length > 0;
 
   return (
-    <View style={[styles.mainContainer]}>
+    <ScrollView contentContainerStyle={[styles.scrollView]}>
       {hasSignals ? (
         <>
-          {renderData(data)}
-          <View style={styles.paginationHolder}>
+        {renderData(data)}
+          <View style={[styles.paginationHolder]}>
             <Text style={[styles.text]}>Current Page: {page + 1}</Text>
             <View style={styles.buttonHolder}>
               <Pressable
@@ -116,13 +118,24 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
         </Text>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollView:{
+    minHeight:'100%',
+    padding:5,
+    // borderColor:'red',
+    // borderWidth:1,
+    backgroundColor:'#121212',
+  },
   mainContainer:{
-    backgroundColor:'red',
+    backgroundColor:'#121212',
+    borderColor:'blue',
+    height:'100%',
+    borderWidth:1,
+    padding:5
   },
   btnTxt:{
     color:'#fff',
@@ -174,12 +187,10 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   paginationHolder: {
-    marginTop: 20,
-    // minHeight:'100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth:2,
-    borderColor:'blue',
+    // borderWidth:2,
+    // borderColor:'blue',
     backgroundColor:'#121212'
   },
   

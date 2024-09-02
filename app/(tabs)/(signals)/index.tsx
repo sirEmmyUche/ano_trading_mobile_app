@@ -1,18 +1,16 @@
 import React from 'react'
 import {Pressable, StyleSheet, ScrollView,Text,View,Image,
      SafeAreaView,StatusBar,Platform} from 'react-native';
-
 import { Stack, Link } from 'expo-router';
-import CoreService from '../../../components/CoreService' ;
-import MaskedView from '@react-native-masked-view/masked-view'
-import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialTabBarIcon,ZocialIcon,FontistoIcon } from '@/components/navigation/TabBarIcon';
+import {ZocialIcon,FontistoIcon } from '@/components/navigation/TabBarIcon';
+import PushNotification from '../../../components/pushNotification'
 
 export default function SignalScreen() {
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={[styles.container,]}>
             <Pressable>
+              <PushNotification/>
               <View style={[styles.imageWrapper]}>
                 <Image source={require('../../../assets/images/buy-sell-dice-dark-2.png')}
                 resizeMode='cover'         

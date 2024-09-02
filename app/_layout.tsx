@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import Firebase from '../firebase';
+// import Firebase from '../firebase';
 import {SessionProvider, } from '../context/userContext';
 
 SplashScreen.preventAutoHideAsync();
@@ -19,7 +19,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    Firebase();
+    // Firebase();
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }

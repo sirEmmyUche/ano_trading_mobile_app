@@ -1,39 +1,35 @@
 
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Text, View, StyleSheet, TextInput, 
-  SafeAreaView, ScrollView,
-  Pressable,
+  SafeAreaView, ScrollView,Platform,
+  Pressable,ActivityIndicator,KeyboardAvoidingView,
   StatusBar} from 'react-native';
 import Octicons from '@expo/vector-icons/Octicons';
 import { useForm, Controller } from 'react-hook-form';
 import { Link, useRouter } from 'expo-router';
-// import { logIn } from '@/APIs';
 import { signUp } from '@/APIs';
 import { useMutation } from '@tanstack/react-query';
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
-// import {useAuth, storeData,} from '@/context/userContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import GoogleSignIn from '@/components/google_oauth2';
 
 
 const formSchema = z.object({
-email: z.string().email('Please enter a valid email'),
-password: z.string().min(5, 'Password must be at least 8 characters'),
+email: z.string().email('This field is required'),
+password: z.string().min(5,'Password must be at least 5 characters'),
+firstName:z.string(),
+lastName:z.string()
 });
-
-// type FormData = {
-//   email: string
-//   password: string
-// }
-
 export default function SignUpScree(){
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string|null>('');
+  const [successMessage, setSuccessMessage] = useState<string|null>('');
+  const [countdown, setCountdown] = useState(5); // Set countdown seconds
+  const [shouldNavigate, setShouldNavigate] = useState(false); 
   const [disableButton, setDisableButton] = useState(false)
   const [hidePassword, setHidePassword] = useState(true)
-  // const { user, setUser,} = useAuth();
   const router = useRouter();
-  const {handleSubmit, control, reset, formState: { errors } } = useForm({
+  const {handleSubmit, control, formState: { errors } } = useForm({
     defaultValues: {email:'',password:'',firstName:'',lastName:''},
     resolver: zodResolver(formSchema),
   });
@@ -46,10 +42,11 @@ export default function SignUpScree(){
         setErrorMessage('No response from server. Please try again later.');
         setDisableButton(false)
       }
-      if(data.success && data.status ==='success') {
-        setErrorMessage('Sign up was successful, you will have to login.')
+      if(data && data.status ==='success'){
+        setErrorMessage(null);
+        setSuccessMessage('Sign up successful! Please log in to continue.');
+        setShouldNavigate(true);
         setDisableButton(false)
-        router.replace('../(tabs)')
       } else {
         // Show error message
         setErrorMessage(data.message || 'Sign up failed. Please try again later.');
@@ -57,22 +54,38 @@ export default function SignUpScree(){
       }
     },
     onError:(error) => {
-      console.error('sign up mutation error:', error)
+      // console.error('sign up mutation error:', error)
       setErrorMessage('Unable to sign up. Please try again later.');
       setDisableButton(false)
     },
   });
- 
 
   const onSubmit = (data:{firstName:string, lastName:string,
     email:string,password:string}) => {
-    console.log('form details:',data);
+    // console.log('form details:',data);
     setDisableButton(true)
       mutation.mutate(data);
   };
 
+  useEffect(() => {
+    if (shouldNavigate) {
+      const timer = setInterval(() => {
+        setCountdown(prevCount => prevCount - 1);
+      }, 1000);
+      if (countdown <= 0) {
+        clearInterval(timer);
+        router.replace('../login'); // Navigate to login page
+      }
+      return () => clearInterval(timer);
+    }
+  }, [shouldNavigate, countdown]);
+
   return (
     <SafeAreaView style={[styles.safeArea]}>
+       <KeyboardAvoidingView
+       behavior={Platform.OS === "ios" ? "padding" : "height"}
+       style={[styles.safeArea]}
+       >
       <ScrollView contentContainerStyle={[styles.safeArea]}
       showsVerticalScrollIndicator={false}>
       <View style={[styles.container]}>
@@ -81,7 +94,10 @@ export default function SignUpScree(){
         </View>
         <View style={[styles.inputParentContainer]}>
           <View style={[styles.errorMsgView]}>
-              <Text style={[styles.errMsg]}>{errorMessage?errorMessage:null}</Text>
+          {errorMessage ? <Text style={[styles.errMsg]}>{errorMessage}</Text> : null}
+              {successMessage ? (
+                <Text style={[styles.successMsg]}>{successMessage} Redirecting in {countdown}s...</Text>
+              ) : null}
           </View>
         <View style={[styles.labelView]}><Text style={[styles.labelText]}>First Name</Text></View>
       <Pressable style={[styles.inputWrapper]}>
@@ -121,9 +137,9 @@ export default function SignUpScree(){
         rules={{ required: true, }}
       />
       </Pressable>
-        {/* <View style={[styles.errorMsgView]}>
+        <View style={[styles.errorMsgView]}>
             {errors.lastName && <Text style={[styles.formErrorMsg]}>This field is required</Text>}
-        </View> */}
+        </View>
         <View style={[styles.labelView]}><Text style={[styles.labelText]}>Email</Text></View>
         <Pressable style={[styles.inputWrapper]}>
         <Controller
@@ -171,7 +187,9 @@ export default function SignUpScree(){
       </Pressable>
       </Pressable>
       <View style={[styles.errorMsgView]}>
-          {errors.password && <Text style={[styles.formErrorMsg]}>This field is required</Text>}
+          {errors.password && <Text style={[styles.formErrorMsg]}>
+          Password must be at least 5 characters
+        </Text>}
       </View>
       <Pressable
         style={[styles.button]}
@@ -184,7 +202,9 @@ export default function SignUpScree(){
            start={{ x: 0, y: 0.5 }}
            end={{ x: 1, y: 0.5 }}
            >
-          <Text style={[styles.buttonText]}>Sign Up</Text>
+          <Text style={[styles.buttonText]}>
+          {!disableButton?'Sign up':<ActivityIndicator size={'small'} color={'#fff'}/>}
+          </Text>
           </LinearGradient>
       </Pressable>
       </View>
@@ -196,7 +216,6 @@ export default function SignUpScree(){
       </View>
       <Pressable style={[styles.google]}>
         <GoogleSignIn/>
-        {/* <Text style={{color:'white'}}>Google</Text> */}
       </Pressable>
         <Pressable style={[styles.linkToOtherPage]}>
             <Text style={[styles.linkToOtherPageText]}>Have an account?</Text>
@@ -207,6 +226,7 @@ export default function SignUpScree(){
     </Pressable>
     </View>
     </ScrollView>
+       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -256,11 +276,19 @@ const styles = StyleSheet.create({
     borderWidth:1,
     borderColor:'transparent'
   },
+  successMsg: {
+    color:'#27AE60',
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight:'bold',
+  },
   errMsg:{
     color:'#e73c7e',
     textAlign:'center',
     fontSize: 16,
     lineHeight: 24,
+    fontWeight:'bold',
   },
   formErrorMsg:{
       color:'#e73c7e',

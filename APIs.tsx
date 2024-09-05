@@ -1,4 +1,4 @@
-const baseUrl:string = 'https://45ec-105-112-217-63.ngrok-free.app'; 
+const baseUrl:string = 'https://bf8b-105-112-214-213.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
 
@@ -171,7 +171,7 @@ export const sendPushNotificationTokenToServer = async(token:string)=>{
             credentials: 'include',
     });
     const result = await data.json();
-    console.log('token:', result);
+    // console.log('token:', result);
     return result;
     }catch(error){
         return error

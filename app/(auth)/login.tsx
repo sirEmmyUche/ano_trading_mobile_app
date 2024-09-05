@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { Text, View, StyleSheet, TextInput, 
   SafeAreaView, ScrollView, KeyboardAvoidingView, Platform,
-  Pressable,
+  Pressable, ActivityIndicator,
   StatusBar} from 'react-native';
 import Octicons from '@expo/vector-icons/Octicons';
 import { useForm, Controller } from 'react-hook-form';
@@ -19,8 +19,8 @@ password: z.string().min(5, 'Password must be at least 8 characters'),
 
 export default function LoginScree(){
   const [errorMessage, setErrorMessage] = useState('');
-  const [disableButton, setDisableButton] = useState(false)
-  const [hidePassword, setHidePassword] = useState(true)
+  const [disableButton, setDisableButton] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
   const { signIn } = useSession();
   const router = useRouter();
   const {handleSubmit, control, formState: { errors } } = useForm({
@@ -47,8 +47,7 @@ export default function LoginScree(){
        behavior={Platform.OS === "ios" ? "padding" : "height"}
        style={[styles.safeArea]}
        >
-
-<ScrollView contentContainerStyle={[styles.safeArea]}>
+    <ScrollView contentContainerStyle={[styles.safeArea]}>
       <View style={[styles.container]}>
         <View style={[styles.headerContainer]}>
           <Text style={[styles.signInTitle]}>Sign In</Text>
@@ -124,7 +123,9 @@ export default function LoginScree(){
            start={{ x: 0, y: 0.5 }}
            end={{ x: 1, y: 0.5 }}
            >
-          <Text style={[styles.buttonText]}>Sign In</Text>
+          <Text style={[styles.buttonText]}>
+            {!disableButton?'Sign In':<ActivityIndicator size={'small'} color={'#fff'}/>}
+          </Text>
           </LinearGradient>
       </Pressable>
       </View>
@@ -202,6 +203,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize: 16,
     lineHeight: 24,
+    fontWeight:'bold',
   },
   formErrorMsg:{
       color:'#e73c7e',
@@ -266,6 +268,7 @@ const styles = StyleSheet.create({
   buttonText:{
     color:'#fff',
     textAlign:'center',
+    justifyContent:'center',
     fontSize:20,
     fontWeight: 'bold',
   },
@@ -311,153 +314,3 @@ const styles = StyleSheet.create({
   }
 
 });
-
-
-
-
-// // login.tsx
-// import React, { useState } from 'react';
-// import { Text, View, StyleSheet, TextInput, SafeAreaView,
-//    ScrollView, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
-// import Octicons from '@expo/vector-icons/Octicons';
-// import { useForm, Controller } from 'react-hook-form';
-// import { Link, useRouter } from 'expo-router';
-// import { z } from 'zod';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useSession } from '@/context/userContext';
-// import { LinearGradient } from 'expo-linear-gradient';
-
-// const formSchema = z.object({
-//   email: z.string().email('Please enter a valid email'),
-//   password: z.string().min(5, 'Password must be at least 8 characters'),
-// });
-
-// export default function LoginScreen() {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [disableButton, setDisableButton] = useState(false);
-//   const [hidePassword, setHidePassword] = useState(true);
-//   const { signIn } = useSession();
-//   const router = useRouter();
-//   const { handleSubmit, control, formState: { errors } } = useForm({
-//     defaultValues: { email: '', password: '' },
-//     resolver: zodResolver(formSchema),
-//   });
-
-//   const onSubmit = async (data: { email: string; password: string }) => {
-//     setDisableButton(true);
-//     const error = await signIn(data);
-//     if (error) {
-//       setErrorMessage(error);
-//       setDisableButton(false);
-//     } else {
-//       setErrorMessage('');
-//       router.push('/somewhere'); // Redirect to some page after successful login
-//     }
-//   };
-
-//   return (
-//     <SafeAreaView style={[styles.safeArea]}>
-//       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={[styles.safeArea]}>
-//         <ScrollView contentContainerStyle={[styles.safeArea]}>
-//           <View style={[styles.container]}>
-//             <View style={[styles.headerContainer]}>
-//               <Text style={[styles.signInTitle]}>Sign In</Text>
-//             </View>
-//             <View style={[styles.inputParentContainer]}>
-//               <View style={[styles.errorMsgView]}>
-//                 <Text style={[styles.errMsg]}>{errorMessage ? errorMessage : null}</Text>
-//               </View>
-//               <View style={[styles.labelView]}><Text style={[styles.labelText]}>Email</Text></View>
-//               <Pressable style={[styles.inputWrapper]}>
-//                 <Controller
-//                   control={control}
-//                   render={({ field: { onChange, onBlur, value } }) => (
-//                     <TextInput
-//                       textContentType='emailAddress'
-//                       autoCapitalize='none'
-//                       placeholder='example@gmail.com'
-//                       style={styles.input}
-//                       onBlur={onBlur}
-//                       onChangeText={value => onChange(value)}
-//                       value={value}
-//                     />
-//                   )}
-//                   name="email"
-//                   rules={{ required: true }}
-//                 />
-//               </Pressable>
-//               <View style={[styles.errorMsgView]}>
-//                 {errors.email && <Text style={[styles.formErrorMsg]}>This field is required</Text>}
-//               </View>
-//               <View style={[styles.labelView]}><Text style={[styles.labelText]}>Password</Text></View>
-//               <Pressable style={[styles.inputWrapper]}>
-//                 <Controller
-//                   control={control}
-//                   render={({ field: { onChange, onBlur, value } }) => (
-//                     <TextInput
-//                       textContentType='password'
-//                       autoCapitalize='none'
-//                       secureTextEntry={hidePassword}
-//                       placeholder='password'
-//                       style={styles.input}
-//                       onBlur={onBlur}
-//                       onChangeText={value => onChange(value)}
-//                       value={value}
-//                     />
-//                   )}
-//                   name="password"
-//                   rules={{ required: true }}
-//                 />
-//                 <Pressable style={{ marginLeft: 280 }} onPress={() => setHidePassword(!hidePassword)}>
-//                   <Octicons name={hidePassword ? 'eye-closed' : 'eye'} size={22} />
-//                 </Pressable>
-//               </Pressable>
-//               <View style={[styles.errorMsgView]}>
-//                 {errors.password && <Text style={[styles.formErrorMsg]}>This field is required</Text>}
-//               </View>
-//             </View>
-//             <Pressable disabled={disableButton} onPress={handleSubmit(onSubmit)} style={[styles.loginButton, disableButton && styles.buttonDisabled]}>
-//               <LinearGradient colors={['#64b5f6', '#2196f3']} style={[styles.gradientButton]}>
-//                 <Text style={[styles.buttonText]}>Sign In</Text>
-//               </LinearGradient>
-//             </Pressable>
-//             <View style={[styles.forgotPasswordContainer]}>
-//               <Link href={{ pathname: '/password-reset' }} style={[styles.forgotPasswordLink]}>Forgot Password?</Link>
-//             </View>
-//             <View style={[styles.registerContainer]}>
-//               <Text style={[styles.registerText]}>Don’t have an account? </Text>
-//               <Link href={{ pathname: '/signup' }} style={[styles.registerLink]}>Sign Up</Link>
-//             </View>
-//           </View>
-//         </ScrollView>
-//       </KeyboardAvoidingView>
-//     </SafeAreaView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   safeArea: { flex: 1 },
-//   container: { flex: 1, padding: 20 },
-//   headerContainer: { marginBottom: 30 },
-//   signInTitle: { fontSize: 24, fontWeight: 'bold' },
-//   inputParentContainer: { marginBottom: 20 },
-//   errorMsgView: { marginBottom: 10 },
-//   errMsg: { color: 'red' },
-//   labelView: { marginBottom: 5 },
-//   labelText: { fontSize: 16, fontWeight: 'bold' },
-//   inputWrapper: { flexDirection: 'row', alignItems: 'center' },
-//   input: { flex: 1, borderBottomWidth: 1, borderColor: '#ddd', paddingVertical: 5 },
-//   formErrorMsg: { color: 'red' },
-//   loginButton: { marginTop: 20, borderRadius: 5 },
-//   buttonDisabled: { opacity: 0.5 },
-//   gradientButton: { padding: 15, alignItems: 'center', borderRadius: 5 },
-//   buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-//   forgotPasswordContainer: { marginTop: 20, alignItems: 'center' },
-//   forgotPasswordLink: { color: '#2196f3' },
-//   registerContainer: { marginTop: 20, flexDirection: 'row', justifyContent: 'center' },
-//   registerText: { fontSize: 16 },
-//   registerLink: { color: '#2196f3' },
-// });
-
-
-

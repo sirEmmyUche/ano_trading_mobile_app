@@ -5,7 +5,7 @@ import { MaterialTabBarIcon } from "./navigation/TabBarIcon";
 
 export default function Support(){
     const openEmail = useCallback(async() => {
-        await Linking.openURL('mailto:emmyosuchukwu@gmail.com');
+        await Linking.openURL('mailto:anofx@outlook.com');
       },[]);
 
     return(

@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { Text, View, StyleSheet, TextInput, 
-  SafeAreaView, ScrollView,
+  SafeAreaView, ScrollView,ActivityIndicator,
   Pressable,
   StatusBar} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -17,11 +17,6 @@ const formSchema = z.object({
 email: z.string().email('Please enter a valid email'),
 });
 
-// type FormData = {
-//   email: string
-//   password: string
-// }
-
 export default function FogotPasswordScreen(){
   const [errorMessage, setErrorMessage] = useState('');
   const [disableButton, setDisableButton] = useState(false)
@@ -37,8 +32,8 @@ export default function FogotPasswordScreen(){
         setErrorMessage('No response from server. Please try again later.');
         setDisableButton(false)
       }
-      if(data.success && data.status ==='success') {
-        setErrorMessage(data.message || 'A message has been sent to the email address.');
+      if(data && data.status ==='success'){
+        setErrorMessage(data.message || 'A reset link has been sent to the email address.');
         setDisableButton(false)
       } else {
         // Show error message
@@ -47,7 +42,7 @@ export default function FogotPasswordScreen(){
       }
     },
     onError:(error) => {
-      console.error('forgot password mutation error:', error)
+      // console.error('forgot password mutation error:', error)
       setErrorMessage('Something went wrong. Please try again later.');
       setDisableButton(false)
     },
@@ -69,7 +64,7 @@ export default function FogotPasswordScreen(){
         <View style={[styles.inputParentContainer]}>
           <View>
           <View style={{marginBottom:20, marginTop:20}}>
-              <Text style={[{color:'white'}]}>Enter the email associated with your account and
+              <Text style={[{color:'#fff'}]}>Enter the email associated with your account and
               we'll send an email instructions on how to reset your password.
               </Text>
           </View>
@@ -111,7 +106,9 @@ export default function FogotPasswordScreen(){
               start={{ x: 0, y: 0.5 }}
               end={{ x: 1, y: 0.5 }}
               >
-              <Text style={[styles.buttonText]}>Continue</Text>
+              <Text style={[styles.buttonText]}>
+              {!disableButton?'Continue':<ActivityIndicator size={'small'} color={'#fff'}/>}
+              </Text>
               </LinearGradient>
           </Pressable>
           <Pressable style={[styles.linkToOtherPage]}>
@@ -119,27 +116,6 @@ export default function FogotPasswordScreen(){
                 <Text style={[styles.linkToOtherPageText,]}>Sign In</Text>
             </Link>
           </Pressable>
-          <MaskedView
-            style={{ flex: 1,flexDirection:'row',height:100,}} 
-            maskElement={
-              <View
-                style={{
-                  backgroundColor: 'transparent',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderWidth:1,
-                  borderColor:'red'
-                }}>
-                <Text style={{fontSize:20,color:'white'}}>My name is checking whether it is working?</Text>
-              </View>
-            }
-            >
-            <LinearGradient
-                colors={['red', 'blue', 'green']}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                style={{ flex: 1 }}/>
-            </MaskedView>
           </View>
       </View>
     </View>
@@ -196,6 +172,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize: 16,
     lineHeight: 24,
+    fontWeight:'bold',
   },
   formErrorMsg:{
       color:'#e73c7e',

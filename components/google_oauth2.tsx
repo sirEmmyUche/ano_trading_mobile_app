@@ -19,22 +19,6 @@ export default function GoogleSignIn() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
 
-  // useEffect(() => {
-  //   const handleAuth = async () => {
-  //     if(response?.type === 'error'){console.log('response:',response)}
-  //     if (response?.type === 'success') {
-  //       const { authentication } = response;
-  //       const errMsg = await googleAuth(authentication?.idToken || '');
-  //       if (errMsg) {
-  //         setErrorMessage(errMsg);
-  //       } else {
-  //         router.replace('../app/(tabs)/');
-  //         setErrorMessage('');
-  //       }
-  //     }
-  //   };
-  //   handleAuth();
-  // }, [response]);
   useEffect(() => {
     const handleAuth = async () => {
       console.log('Auth response:', response);

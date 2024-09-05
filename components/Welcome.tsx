@@ -1,4 +1,4 @@
-import { StyleSheet, Animated, ImageBackground,
+import { StyleSheet, Animated, ImageBackground,Platform,
   Dimensions, View, useColorScheme,Text, } from 'react-native';
 import React, { useRef, useEffect } from 'react';
 import type { PropsWithChildren } from 'react';
@@ -84,11 +84,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   boxShadow:{
-    shadowColor:"#cccccc",
-    shadowOffset:{width:-3, height:3},
-    shadowOpacity:1,
-    shadowRadius:1,
-    elevation:5,
+    ...Platform.select({
+      ios:{
+    shadowColor: "#cccccc",
+    shadowOffset: { width:0, height:3},
+    shadowOpacity: 1,
+    shadowRadius: 1,
+      },
+      android:{
+        shadowColor: "#cccccc",
+        elevation:3,
+      }
+    })
   },
   background: {
     flex: 1,

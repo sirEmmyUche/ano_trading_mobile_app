@@ -5,7 +5,6 @@ import { IoniconsTabBarIcon, MaterialTabBarIcon, MaterialCommunity
 } from '@/components/navigation/TabBarIcon'
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Platform,Text } from 'react-native';
 import { useSession } from '@/context/userContext';
 import CustomLoadingScreen from '@/components/appStartScreen';
 
@@ -14,9 +13,10 @@ export default function TabLayout() {
   const { session, isLoading } = useSession();
   const colorScheme = useColorScheme();
   const bColor = colorScheme === 'dark'?'#0000':'#fff' || Colors[colorScheme ?? 'light'].tint
-  if (isLoading) {
-    return <CustomLoadingScreen/>;
-  }
+
+  // if (isLoading) {
+  //   return <CustomLoadingScreen/>;
+  // }
 
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.

@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
     opacity:0.5
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: '#ccc',
    
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor:'#2196F3',
   },
   text:{
     color:'#fff',

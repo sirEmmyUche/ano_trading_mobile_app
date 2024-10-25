@@ -4,10 +4,10 @@ import { StyleSheet, Image, ViewStyle, Pressable, View, Text,
   Platform,
   ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import { statusColor } from '../constants/statusColor'
-import { IoniconsTabBarIcon, MaterialTabBarIcon, OcticonsTabBarIcon } from './navigation/TabBarIcon'
+import { MaterialTabBarIcon,} from './navigation/TabBarIcon'
 
 interface LiveSignalProps {
-  signalAPI: (page: number) => Promise<any>; 
+  signalAPI: (page: number, token:string|undefined) => Promise<any>; 
 }
 const LiveSignal = ({ signalAPI }: LiveSignalProps) => {
 const renderData = (data: any) => {

@@ -5,17 +5,20 @@ import { Pressable, StyleSheet,Text,View,ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunity } from "./navigation/TabBarIcon";
+import { useSession } from "@/context/userContext";
 
 interface QueryDataProps {
-  apiFunction: (page: number) => Promise<any>;
+  apiFunction: (page: number, token:string|undefined) => Promise<any>;
   renderData: (data: any) => React.ReactNode; // Add renderData prop
 }
 
 const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
   const [page, setPage] = useState(0);
+  const {session} = useSession();
+  const token = session?.user.token;
   const { isLoading, isError, data, error, isFetching, isPlaceholderData } = useQuery({
     queryKey: ['signals', page],
-    queryFn: () => apiFunction(page),
+    queryFn: () => apiFunction(page,token),
     placeholderData: keepPreviousData,
     refetchInterval: 600000, // Refetch every 10 minutes (600000 milliseconds)
   });

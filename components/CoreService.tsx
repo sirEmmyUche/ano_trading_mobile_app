@@ -20,7 +20,7 @@ export default function CoreService(){
                 <Image source={require('@/assets/images/signal-4-img-mobile.png')} 
                 style={styles.image} resizeMode="contain" />
               </View>
-              <Link href={'/'}>
+              <Link href={'/join_meeting'}>
                 <Text style={styles.serviceTextSubtitle}>Trainings</Text>
               </Link>
             </Pressable>

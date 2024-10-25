@@ -1,5 +1,7 @@
-const baseUrl:string = 'https://bf8b-105-112-214-213.ngrok-free.app'; 
+const baseUrl:string = 'https://anotrade-server.onrender.com'; 
+// const baseUrl:string = 'https://a115-105-112-211-31.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
+
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
 
 export const signUp = async (formData:any): Promise<any>=>{
@@ -17,7 +19,7 @@ export const signUp = async (formData:any): Promise<any>=>{
 }
 
 export const logIn = async (formData:{email:string,password:string}): Promise<any>=>{
-    const data = await fetch(`${baseUrl}/api/user/login`,{
+    const data = await fetch(`${baseUrl}/api/user/mobile/login`,{
             method:'post',
             headers: {
                     'Content-Type': 'application/json',
@@ -84,10 +86,13 @@ export const pricingAPI = async()=>{
         // console.error('Pricing:',error)
     }
 }
-export const initializePayment = async (paymentData:any)=>{
+export const initializePayment = async (paymentData:any,token:string|undefined)=>{
     const data = await fetch(`${baseUrl}/api/initialize/payment`,{
             method:'post',
-            headers: {'Content-Type': 'application/json',},
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(paymentData),
             credentials: 'include',
     });
@@ -109,9 +114,13 @@ export const getPastSignals = async()=>{
     }
 }
 
-export const getForexSignals = async(page: number, filterStatus: string = 'all') => {
+export const getForexSignals = async(page:number,token:string|undefined) => {
     try {
-        const res = await fetch(`${baseUrl}/api/forex/signals?page=${page}&filterStatus=${filterStatus}`, {
+        const res = await fetch(`${baseUrl}/api/forex/signals?page=${page}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             credentials: 'include',
         });
         const data = await res.json();
@@ -122,9 +131,13 @@ export const getForexSignals = async(page: number, filterStatus: string = 'all')
 }
 
 
-export const getCryptoSignals = async(page:number)=>{
+export const getCryptoSignals = async(page:number,token:string|undefined)=>{
     try{
         const res = await fetch(`${baseUrl}/api/crypto/signals?page=${page}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             credentials: 'include',
     })
         const data = await res.json();
@@ -135,9 +148,13 @@ export const getCryptoSignals = async(page:number)=>{
     }
 }
 
-export const getStockSignals = async(page:number)=>{
+export const getStockSignals = async(page:number, token:string|undefined)=>{
     try{
         const res = await fetch(`${baseUrl}/api/stock/signals?page=${page}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             credentials: 'include',
     })
         const data = await res.json();
@@ -162,12 +179,15 @@ export const deleteAvi = async(id:string)=>{
     }
 }
 
-export const sendPushNotificationTokenToServer = async(token:string)=>{
+export const sendPushNotificationTokenToServer = async(pushToken:string,token:string|undefined)=>{
     try{
         const data = await fetch(`${baseUrl}/api/store/pushtoken`,{
             method:'post',
-            headers: {'Content-Type': 'application/json',},
-            body:JSON.stringify({token}),
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify({pushToken}),
             credentials: 'include',
     });
     const result = await data.json();
@@ -176,4 +196,19 @@ export const sendPushNotificationTokenToServer = async(token:string)=>{
     }catch(error){
         return error
     }
+}
+
+export const apiJoinMeeting = async (token:string|undefined)=>{
+    const data = await fetch(`${baseUrl}/api/join/live/meeting`,{
+            method:'get',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            // body: JSON.stringify(paymentData),
+            credentials: 'include',
+    });
+    const result = await data.json();
+    // console.log('paymentData', result);
+    return result;
 }

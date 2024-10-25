@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Pressable,
-  // Button,
-  Linking,
-  ActivityIndicator,
-  Platform,
+import {View,Text,StyleSheet,SafeAreaView,ScrollView,
+  StatusBar,Pressable,ActivityIndicator,Platform,
 } from 'react-native';
 import { pricingAPI, initializePayment } from '@/APIs';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,6 +18,7 @@ function SubscriptionScreen() {
   const { session } = useSession();
 
   const email = session?.user.email;
+  const token = session?.user.token;
 
   const fetchPrices = async () => {
     try {
@@ -59,7 +50,10 @@ function SubscriptionScreen() {
   };
 
   const mutation = useMutation({
-    mutationFn: initializePayment,
+    // mutationFn: initializePayment,
+    mutationFn: (packageDetails: any) => {
+      return initializePayment(packageDetails, token);
+    },
     onMutate: () => {
       setLoading(true);
       setError(null);

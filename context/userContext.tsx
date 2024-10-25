@@ -4,7 +4,10 @@ import { useMutation } from '@tanstack/react-query';
 import { logIn, logOut,googleOauth} from '@/APIs';
 
 type Session = {
-  user: { id: string; email: string, displayName:string, profilePics:string, role:string};
+  user: { id: string; email: string, displayName:string,
+     profilePics:string, role:string,
+     token:string
+    };
   // token: string;
   // Add any other fields you expect in the session object
 };

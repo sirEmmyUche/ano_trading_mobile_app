@@ -14,7 +14,7 @@ export default function Avi() {
   const [accessMediaPermission, requestAccessMediaPermission] = ImagePicker.useMediaLibraryPermissions();
   const {session, setSession} = useSession();
   const userEmail = session?.user.email;
-  const baseUrl = 'https://0b5b-105-112-221-92.ngrok-free.app'
+  const baseUrl = 'https://anotrade-server.onrender.com'
   const id = session?.user.id;
   const userName = session?.user.displayName;
   const profilePics = session?.user.profilePics;

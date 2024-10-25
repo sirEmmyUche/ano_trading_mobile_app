@@ -20,23 +20,28 @@ const styles = StyleSheet.create({
     //     borderWidth:1
     // },
     pending:{
-        backgroundColor:'#b58c10',
-        borderColor:'#b58c10',
+        borderColor:'#34c759',
+        backgroundColor:'#34c759',
+        fontWeight:'bold',
     },
     completed:{
         borderColor:'#4682b4',
-        backgroundColor:'#4682b4'
+        backgroundColor:'#4682b4',
+        fontWeight:'bold',
     },
     active:{
-        borderColor:'#34c759',
-        backgroundColor:'#34c759'
+        backgroundColor:'#b58c10',
+        borderColor:'#b58c10',
+        fontWeight:'bold',
     },
     closed:{
         borderColor:'#6c757d',
-        backgroundColor:'#6c757d'
+        backgroundColor:'#6c757d',
+        fontWeight:'bold',
     },
     deleted:{
         borderColor:'#e74c3c',
-        backgroundColor:'#e74c3c'
+        backgroundColor:'#e74c3c',
+        fontWeight:'bold',
     }
 })

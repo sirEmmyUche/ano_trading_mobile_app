@@ -19,7 +19,7 @@ export default function HomeScreen() {
         <View>
           <View style={{marginBottom:10,marginTop:10}}>
           <Text style={[styles.text]}>
-            Check Out The Results From Our Amazing Past Signals.
+            Amazing Past Signals.
           </Text>
           </View>
           <Pressable>

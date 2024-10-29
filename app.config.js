@@ -26,6 +26,41 @@ module.exports = ({ config }) => ({
       },
       permissions: ["android.permission.RECORD_AUDIO"],
     },
+    package: "com.Anotrade",
+    "permissions": [
+      "NOTIFICATIONS",
+      "WRITE_EXTERNAL_STORAGE",
+      "READ_EXTERNAL_STORAGE"
+    ],
+    web: {
+        "bundler": "metro",
+        "output": "static",
+        "favicon": "./assets/images/favicon.png"
+      },
+      plugins: [
+        "expo-router",
+        "@react-native-firebase/app",
+        "@react-native-firebase/perf",
+        "@react-native-firebase/crashlytics",
+        [
+          "expo-build-properties",
+          {
+            "ios": {
+              "useFrameworks": "static"
+            }
+          }
+        ],
+        [
+          "expo-image-picker",
+          {
+            "photosPermission": "Allow AnoTrade to access your photos",
+            "cameraPermission": "Allow AnoTrade to access your camera"
+          }
+        ]
+      ],
+      experiments: {
+        "typedRoutes": true
+      },
     extra: {
       eas: {
         projectId: "bf75dd29-a258-44e2-b222-cf41310a21ad",

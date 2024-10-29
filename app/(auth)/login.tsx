@@ -137,7 +137,6 @@ export default function LoginScree(){
       </View>
       <Pressable style={[styles.google]}>
         <GoogleSignIn/>
-        {/* <Text style={{color:'white'}}>Google</Text> */}
       </Pressable>
         <Pressable style={[styles.linkToOtherPage]}>
             <Text style={[styles.linkToOtherPageText]}>Don't have an account?</Text>

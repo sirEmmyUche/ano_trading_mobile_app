@@ -14,11 +14,9 @@
     },
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "${secret:GOOGLE_SERVICES_INFO_PLIST}", 
       "bundleIdentifier": "com.Anotrade"
     },
     "android": {
-      "googleServicesFile": "${secret:GOOGLE_SERVICES_JSON}", 
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#121212"

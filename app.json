@@ -14,59 +14,19 @@
     },
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist",
+      "googleServicesFile": "${secret:GOOGLE_SERVICES_INFO_PLIST}", 
       "bundleIdentifier": "com.Anotrade"
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "${secret:GOOGLE_SERVICES_JSON}", 
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#121212"
       },
       "package": "com.Anotrade",
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
-    },
-    "package": "com.Anotrade",
-    "permissions": [
-      "NOTIFICATIONS",
-      "WRITE_EXTERNAL_STORAGE",
-      "READ_EXTERNAL_STORAGE"
-    ],
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router",
-      "@react-native-firebase/app",
-      "@react-native-firebase/perf",
-      "@react-native-firebase/crashlytics",
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Allow AnoTrade to access your photos",
-          "cameraPermission": "Allow AnoTrade to access your camera"
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "extra": {
-      "router": {
-        "origin": false
-      },
       "eas": {
         "projectId": "bf75dd29-a258-44e2-b222-cf41310a21ad"
       }

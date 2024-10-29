@@ -3,5 +3,15 @@ module.exports = {
     // icon: process.env.APP_ICON || './assets/icon.png',
     // name: process.env.APP_NAME || 'My App',
     GOOGLE_SERVICES_JSON:process.env.GOOGLE_SERVICES_JSON ||'./google-services.json',
-    GOOGLE_SERVICES_INFO_PLIST:process.env.GOOGLE_SERVICES_INFO_PLIST || './GoogleService-Info.plist'
+    GOOGLE_SERVICES_INFO_PLIST:process.env.GOOGLE_SERVICES_INFO_PLIST || './GoogleService-Info.plist',
+    android: {
+        googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+        // package: "com.sir_emmy_uche.anotrade",
+      },
+      ios:{
+        googleServicesFile:GOOGLE_SERVICES_INFO_PLIST,
+      }
+//     "android": {
+//     "package": "com.sir_emmy_uche.anotrade"
+//   }
   };

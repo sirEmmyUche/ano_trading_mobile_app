@@ -66,6 +66,16 @@ export default function SignUpScree(){
     setDisableButton(true)
       mutation.mutate(data);
   };
+  
+  useEffect(() => {
+    let timer: any;
+    if (errorMessage) {
+        timer = setTimeout(() => {
+          setErrorMessage(null);
+        }, 4000);
+    }
+    return () => clearTimeout(timer);
+}, [errorMessage]);
 
   useEffect(() => {
     if (shouldNavigate) {

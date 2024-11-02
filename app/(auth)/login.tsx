@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Text, View, StyleSheet, TextInput, 
   SafeAreaView, ScrollView, KeyboardAvoidingView, Platform,
   Pressable, ActivityIndicator,
@@ -18,7 +18,7 @@ password: z.string().min(5, 'Password must be at least 8 characters'),
 });
 
 export default function LoginScree(){
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const [disableButton, setDisableButton] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const { signIn } = useSession();
@@ -27,6 +27,16 @@ export default function LoginScree(){
     defaultValues: {email: '',password: ''},
     resolver: zodResolver(formSchema),
   });
+
+  useEffect(() => {
+    let timer: any;
+    if (errorMessage) {
+        timer = setTimeout(() => {
+          setErrorMessage(null);
+        }, 4000);
+    }
+    return () => clearTimeout(timer);
+}, [errorMessage]);
 
     const onSubmit = async (data: { email: string; password: string }) => {
     setDisableButton(true);

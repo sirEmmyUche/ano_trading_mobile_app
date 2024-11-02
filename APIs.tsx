@@ -1,5 +1,5 @@
-const baseUrl:string = 'https://anotrade-server.onrender.com'; 
-// const baseUrl:string = 'https://a115-105-112-211-31.ngrok-free.app'; 
+// const baseUrl:string = 'https://anotrade-server.onrender.com'; 
+const baseUrl:string = 'https://4b3f-105-112-99-79.ngrok-free.app'; 
 // const baseUrl:string = 'http://localhost:3000'; 
 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
@@ -32,19 +32,18 @@ export const logIn = async (formData:{email:string,password:string}): Promise<an
     return result;
 }
 
-export const googleOauth = async (response:any) => {
+export const googleOauth = async (token:any) => {
     try{
-        const { credential } = response;
-      const data = await fetch('${baseUrl}/api/auth/google', {
+      const data = await fetch(`${baseUrl}/api/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ token: credential }),
+        body: JSON.stringify({idToken:token}),
         credentials:'include',
       });
       const result = await data.json();
-      console.log('googlelogin:',result)
+    //   console.log('googlelogin:',result)
       return result;
     }catch(error){
         console.error('google auth:', error)

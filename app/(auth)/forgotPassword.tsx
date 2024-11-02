@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Text, View, StyleSheet, TextInput, 
   SafeAreaView, ScrollView,ActivityIndicator,
   Pressable,
@@ -18,7 +18,7 @@ email: z.string().email('Please enter a valid email'),
 });
 
 export default function FogotPasswordScreen(){
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const [disableButton, setDisableButton] = useState(false)
   const {handleSubmit, control, formState: { errors } } = useForm({
     defaultValues: {email:''},
@@ -47,6 +47,16 @@ export default function FogotPasswordScreen(){
       setDisableButton(false)
     },
   });
+
+  useEffect(() => {
+    let timer: any;
+    if (errorMessage) {
+        timer = setTimeout(() => {
+          setErrorMessage(null);
+        }, 4000);
+    }
+    return () => clearTimeout(timer);
+}, [errorMessage]);
 
 
   const onSubmit = (data:{email:string}) => {

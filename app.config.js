@@ -15,11 +15,11 @@ module.exports = ({ config }) => ({
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.Anotrade",
-      googleServicesFile: process.env.GOOGLE_SERVICES_INFO_PLIST, // Dynamic property
+      googleServicesFile: process.env.GOOGLE_SERVICES_INFO_PLIST,
     },
     android: {
-      package: "com.Anotrade", // Static property added here
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON, // Dynamic property
+      package: "com.Anotrade",
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON, 
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#121212",
@@ -56,8 +56,20 @@ module.exports = ({ config }) => ({
             "photosPermission": "Allow AnoTrade to access your photos",
             "cameraPermission": "Allow AnoTrade to access your camera"
           }
+        ],
+        [
+          "@react-native-google-signin/google-signin",
+          {
+            "iosUrlScheme": "com.googleusercontent.apps.384216782692-n5suo5ncfdichc7d653cbaq2irmkra0c"
+          }
         ]
       ],
+      updates: {
+        url: "https://u.expo.dev/bf75dd29-a258-44e2-b222-cf41310a21ad"
+      },
+      runtimeVersion: {
+        policy: "appVersion"
+      },
       experiments: {
         "typedRoutes": true
       },

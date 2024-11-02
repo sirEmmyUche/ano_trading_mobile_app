@@ -1,55 +1,91 @@
+
 import React, { useState, useEffect } from "react";
 import { View, Pressable, Text, StyleSheet, Image } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
+import {GoogleSignin,GoogleSigninButton,statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { useSession, } from '@/context/userContext';
 import { useRouter } from 'expo-router';
-import * as Google from 'expo-auth-session/providers/google';
-import { useSession } from '@/context/userContext';
-
-WebBrowser.maybeCompleteAuthSession();
+import { useMutation } from "@tanstack/react-query";
+import { googleOauth } from "@/APIs";
 
 export default function GoogleSignIn() {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId: '384216782692-00o6594fqrf7raur14h1gm77eq33pfih.apps.googleusercontent.com',
-    androidClientId: '384216782692-61d8ao8kpijjckldmslaglhu825tn9jv.apps.googleusercontent.com',
-    iosClientId: '384216782692-n5suo5ncfdichc7d653cbaq2irmkra0c.apps.googleusercontent.com',
-    scopes: ['openid', 'profile', 'email'],
-    // redirectUri: 'https://auth.expo.io/@sir_emmy_uche/anotrade',
-    redirectUri: 'exp://192.168.1.183:8081',
-  });
 
-  const { googleAuth } = useSession();
+  const {setSession } = useSession();
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
+  const [disableButton, setDisableButton] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: (token:string)=> googleOauth(token),
+    onSuccess:(data)=>{
+      if (data && data.status === 'success') {
+        // setDisableButton(false);
+        setSession({ user: data.user, });  //token: data.token
+        router.replace('/(home)'); //'../app/(tabs)/'
+      } else {
+        if(!data){
+          // setDisableButton(false);
+          setErrorMessage('No response from server. Please try again later.')
+        }
+        // setDisableButton(false);
+        setErrorMessage( data.message || 'Google Login failed')
+      }
+    },
+    onError:(error)=>{
+      console.error(error)
+       // setDisableButton(false);
+      setErrorMessage('Something went wrong trying to login with Google')
+    }
+  })
 
   useEffect(() => {
-    const handleAuth = async () => {
-      console.log('Auth response:', response);
-      if (response?.type === 'error') {
-        console.log('Auth error:', response.error);
-        setErrorMessage('Authentication failed. Please try again.');
-      }
-      if (response?.type === 'success') {
-        const { authentication } = response;
-        console.log('Authentication object:', authentication);
-        const errMsg = await googleAuth(authentication?.idToken || '');
-        if (errMsg) {
-          setErrorMessage(errMsg);
-        } else {
-          router.replace('../app/(tabs)/');
-          setErrorMessage('');
-        }
-      }
-    };
-    handleAuth();
-  }, [response]);
+    let timer: any;
+    if (errorMessage) {
+        timer = setTimeout(() => {
+          setErrorMessage(null);
+        }, 4000);
+    }
+    return () => clearTimeout(timer);
+}, [errorMessage]);
 
-  return (
-    <View style={styles.container}>
-      <Pressable 
-        onPress={() => {
-          console.log('it is working');
-          promptAsync();
-        }} 
+  GoogleSignin.configure({
+    webClientId: '384216782692-00o6594fqrf7raur14h1gm77eq33pfih.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
+    // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+    offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    // hostedDomain: '', // specifies a hosted domain restriction
+    forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+    accountName: '', // [Android] specifies an account name on the device that should be used
+    iosClientId: '384216782692-n5suo5ncfdichc7d653cbaq2irmkra0c.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. "GoogleService-Info-Staging"
+    openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
+    profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+  });
+
+  
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      
+      if(response.type === 'success'){
+        // console.log({userInfo: response.data })
+        if(response && response?.data?.idToken){
+          // console.log('token',response.data.idToken)
+          mutation.mutate(response?.data?.idToken)
+          }
+      }else{
+          setErrorMessage('Google sign in was cancelled');
+      }
+    } catch (error) {
+      console.error(error)
+      setErrorMessage('Something went wrong trying to login with Google')
+    }
+  };
+  
+    return (
+      <View style={styles.container}>
+       <Pressable 
+        onPress={() => {signIn();}} 
         style={styles.wrapper}
       >
         <View style={styles.logo}>
@@ -63,9 +99,10 @@ export default function GoogleSignIn() {
       </Pressable>
       {errorMessage && <Text style={styles.errMsgText}>{errorMessage}</Text>}
     </View>
-  );
-}
+    );
+  }
 
+  
 const styles = StyleSheet.create({
   container: {
     width: '100%',

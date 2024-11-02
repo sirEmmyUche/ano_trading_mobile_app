@@ -1,7 +1,7 @@
 import { useContext, createContext, type PropsWithChildren } from 'react';
 import { useStorageState } from '../hooks/useStorageState';
 import { useMutation } from '@tanstack/react-query';
-import { logIn, logOut,googleOauth} from '@/APIs';
+import { logIn, logOut,} from '@/APIs';
 
 type Session = {
   user: { id: string; email: string, displayName:string,
@@ -15,14 +15,12 @@ type Session = {
 const AuthContext = createContext<{
   signIn: (formData: { email: string; password: string }) => Promise<string | null>;
   signOut: () => void;
-  googleAuth:(response:any)=>Promise<any>;
   session?: Session | null;
   isLoading: boolean;
   setSession: (session: Session | null) => void; 
 }>({
   signIn: async () => null,
   signOut: () => null,
-  googleAuth:async()=>null,
   session: null,
   isLoading: false,
   setSession: () => {},
@@ -50,10 +48,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
     mutationFn: logOut
   });
 
-  const signInWithGoogleMutation = useMutation({
-    mutationFn: (response) => googleOauth(response),
-  });
-
   const signIn = async (formData: { email: string; password: string }): Promise<string | null> => {
     try {
       const data = await mutation.mutateAsync(formData);
@@ -69,24 +63,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
     } catch (error) {
       console.error('signIn mutation error:', error)
       return 'Unable to login. Please try again later.';
-    }
-  };
-
-  const googleAuth = async (response:any)=> {
-    try {
-      const data = await signInWithGoogleMutation.mutateAsync(response);
-      if (data && data.status === 'success') {
-        setSession({ user: data.user, });  //token: data.token
-        return null; // No error message
-      } else {
-        if(!data){
-          return 'No response from server. Please try again later.'
-        }
-        return data.message || 'Google Login failed';
-      }
-    } catch (error) {
-      console.error('signIn mutation error:', error)
-      return 'Unable to signIn with google. Please try again later.';
     }
   };
 
@@ -108,7 +84,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
       value={{
         signIn,
         signOut,
-        googleAuth,
         session,
         isLoading,
         setSession,

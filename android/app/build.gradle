@@ -83,9 +83,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.sir_emmy_uche.anotrade'
+    namespace 'com.Anotrade'
     defaultConfig {
-        applicationId 'com.sir_emmy_uche.anotrade'
+        applicationId 'com.Anotrade'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

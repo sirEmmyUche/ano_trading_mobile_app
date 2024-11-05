@@ -6,6 +6,7 @@ import { IoniconsTabBarIcon } from './navigation/TabBarIcon';
 import BottomSheet from './bottomSheet';
 import {deleteAvi } from '@/APIs';
 import { useSession } from '@/context/userContext';
+import { baseUrl } from '@/APIs';
 
 export default function Avi() {
   const [errMsg, setErrMsg] = useState<string|null>(null);
@@ -14,7 +15,7 @@ export default function Avi() {
   const [accessMediaPermission, requestAccessMediaPermission] = ImagePicker.useMediaLibraryPermissions();
   const {session, setSession} = useSession();
   const userEmail = session?.user.email;
-  const baseUrl = 'https://anotrade-server.onrender.com'
+  // const baseUrl = 'https://anotrade-server.onrender.com'
   const id = session?.user.id;
   const userName = session?.user.displayName;
   const profilePics = session?.user.profilePics;

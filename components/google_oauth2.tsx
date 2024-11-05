@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect } from "react";
-import { View, Pressable, Text, StyleSheet, Image } from 'react-native';
-import {GoogleSignin,GoogleSigninButton,statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { View, Pressable, Text, StyleSheet, Image,ActivityIndicator } from 'react-native';
+import {GoogleSignin,} from '@react-native-google-signin/google-signin';
 import { useSession, } from '@/context/userContext';
 import { useRouter } from 'expo-router';
 import { useMutation } from "@tanstack/react-query";
@@ -19,21 +18,21 @@ export default function GoogleSignIn() {
     mutationFn: (token:string)=> googleOauth(token),
     onSuccess:(data)=>{
       if (data && data.status === 'success') {
-        // setDisableButton(false);
+        setDisableButton(false);
         setSession({ user: data.user, });  //token: data.token
         router.replace('/(home)'); //'../app/(tabs)/'
       } else {
         if(!data){
-          // setDisableButton(false);
+          setDisableButton(false);
           setErrorMessage('No response from server. Please try again later.')
         }
-        // setDisableButton(false);
+        setDisableButton(false);
         setErrorMessage( data.message || 'Google Login failed')
       }
     },
     onError:(error)=>{
       console.error(error)
-       // setDisableButton(false);
+       setDisableButton(false);
       setErrorMessage('Something went wrong trying to login with Google')
     }
   })
@@ -66,25 +65,28 @@ export default function GoogleSignIn() {
     try {
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      
-      if(response.type === 'success'){
-        // console.log({userInfo: response.data })
-        if(response && response?.data?.idToken){
+
+      if(response && response.type === 'success'){
+        if(response?.data?.idToken){
+          setDisableButton(true);
           // console.log('token',response.data.idToken)
           mutation.mutate(response?.data?.idToken)
           }
       }else{
-          setErrorMessage('Google sign in was cancelled');
+        setDisableButton(false);
+        setErrorMessage('Google sign in was cancelled');
       }
     } catch (error) {
-      console.error(error)
-      setErrorMessage('Something went wrong trying to login with Google')
+      console.error(error);
+      setDisableButton(false);
+      setErrorMessage('Something went wrong trying to login with Google');
     }
   };
   
     return (
       <View style={styles.container}>
        <Pressable 
+       disabled={disableButton}
         onPress={() => {signIn();}} 
         style={styles.wrapper}
       >
@@ -95,7 +97,9 @@ export default function GoogleSignIn() {
             resizeMode="contain" 
           />
         </View>
-        <Text style={styles.text}>Google</Text>
+        <Text style={styles.text}>
+        {!disableButton?'Google':<ActivityIndicator size={'small'} color={'#fff'}/>}
+        </Text>
       </Pressable>
       {errorMessage && <Text style={styles.errMsgText}>{errorMessage}</Text>}
     </View>

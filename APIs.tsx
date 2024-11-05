@@ -1,6 +1,6 @@
-const baseUrl:string = 'https://anotrade-server.onrender.com'; 
-// const baseUrl:string = 'https://4b3f-105-112-99-79.ngrok-free.app'; 
-// const baseUrl:string = 'http://localhost:3000'; 
+export const baseUrl:string = 'https://anotrade-server.onrender.com'; 
+// export const baseUrl:string = 'https://a566-102-89-75-238.ngrok-free.app'; 
+// export const baseUrl:string = 'http://localhost:3000'; 
 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
 

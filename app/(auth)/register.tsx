@@ -54,7 +54,7 @@ export default function SignUpScree(){
       }
     },
     onError:(error) => {
-      // console.error('sign up mutation error:', error)
+      console.error('sign up mutation error:', error)
       setErrorMessage('Unable to sign up. Please try again later.');
       setDisableButton(false)
     },

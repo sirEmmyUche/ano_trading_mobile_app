@@ -1,116 +1,53 @@
-import { StyleSheet, Animated, ImageBackground,Platform,
-  Dimensions, View, useColorScheme,Text, } from 'react-native';
 import React, { useRef, useEffect } from 'react';
-import type { PropsWithChildren } from 'react';
-import type { ViewStyle } from 'react-native';
+import { StyleSheet,View,Text,} from 'react-native';
 import { useSession } from '@/context/userContext';
-
-const { width } = Dimensions.get('window');
-
-type AnimateBackgroundPicsProps = PropsWithChildren<{ style?: ViewStyle }>;
-
-const AnimateBackgroundPics: React.FC<AnimateBackgroundPicsProps> = (props) => {
-  const moveBackgroundPic = useRef(new Animated.Value(0)).current;
-
-  const startAnimation = () => {
-    moveBackgroundPic.setValue(0); // Reset the value to 0 before starting the animation
-    Animated.timing(moveBackgroundPic, {
-      toValue: 1,
-      duration: 10000,
-      useNativeDriver: true,
-    }).start(() => {
-      startAnimation(); // Restart the animation after it completes
-    });
-  };
-
-  useEffect(() => {
-    startAnimation(); // Start the animation initially
-  }, [moveBackgroundPic]);
-
-  const translateX = moveBackgroundPic.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -width],
-  });
-
-  return (
-    <Animated.View
-      style={[
-        styles.backgroundContainer,
-        { transform: [{ translateX }] },
-      ]}
-    >
-      <ImageBackground
-        source={require('../assets/images/backgroundImg.png')}
-        style={styles.backgroundImage}
-        resizeMode="cover"
-      />
-    </Animated.View>
-  );
-};
+import ReuseableAvi from './reusable_avi'
 
 export default function Welcome() {
-  const colorScheme = useColorScheme();
-  const overlayColor = colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
   const {session,} = useSession();
-  const usersName = session?.user.displayName
+  const usersName = session?.user.displayName;
 
   return (
-    <View style={[styles.welcomeContainer,styles.boxShadow]}>
-      <AnimateBackgroundPics style={styles.background} />
-      <View style={[styles.overlay,]}>
-        <Text style={styles.text}>{`Welcome ${usersName}`}</Text>
-        <Text style={{fontSize:10, color:'rgb(255, 198, 0)'}}>
-          ....experience trading like never before
-        </Text>
+    <View style={[styles.welcomeContainer,]}>
+      <View style={[styles.welcomeHolder,]}>
+          <View style={[styles.imageHolder,]}>
+              <ReuseableAvi size ={100}/>
+          </View>
+          <View>
+              <Text style={[styles.text,]}>Welcome,</Text>
+              <Text style={[styles.text,]}>{`${usersName}.`}</Text>
+              <Text style={{fontSize:10, color:'rgb(255, 198, 0)'}}>
+              ....experience trading like never before.
+              </Text>
+          </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundContainer: {
-    position: 'absolute',
-    width: width * 2,
-    height: '100%',
+  text: {
+    color: '#fff',
+    fontSize:25,
+    fontWeight: 'bold',
+    // marginBottom:5, 
+    marginLeft:10
   },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-  },
-  welcomeContainer: {
+    welcomeContainer: {
+    marginTop:15,
+    marginBottom:15,
     borderWidth: 1,
     borderColor: 'transparent',
     height: 150,
-    overflow: 'hidden',
   },
-  boxShadow:{
-    ...Platform.select({
-      ios:{
-    shadowColor: "#cccccc",
-    shadowOffset: { width:0, height:3},
-    shadowOpacity: 1,
-    shadowRadius: 1,
-      },
-      android:{
-        shadowColor: "#cccccc",
-        elevation:3,
-      }
-    })
-  },
-  background: {
-    flex: 1,
-  },
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+  welcomeHolder:{
+    padding:10,
+    width:'100%',
+    flexDirection:'row',
     alignItems: 'center',
+    alignContent:'center',
+    // justifyContent: 'space-between',
   },
-  text: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  imageHolder:{},
 });
 

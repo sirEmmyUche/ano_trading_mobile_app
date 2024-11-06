@@ -1,5 +1,5 @@
 export const baseUrl:string = 'https://anotrade-server.onrender.com'; 
-// export const baseUrl:string = 'https://a566-102-89-75-238.ngrok-free.app'; 
+// export const baseUrl:string = 'https://30dc-105-112-96-153.ngrok-free.app'; 
 // export const baseUrl:string = 'http://localhost:3000'; 
 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
@@ -161,6 +161,23 @@ export const getStockSignals = async(page:number, token:string|undefined)=>{
 
     }catch(error){
         // console.error('stockSignals:',error)
+    }
+}
+
+export const fetchYearlyData = async(token:string|undefined)=>{
+    try{
+        const res = await fetch(`${baseUrl}/api/total/signals/per/month`,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+    })
+        const data = await res.json();
+        return data;
+
+    }catch(error){
+        console.error('fetchYearlyData:',error)
     }
 }
 

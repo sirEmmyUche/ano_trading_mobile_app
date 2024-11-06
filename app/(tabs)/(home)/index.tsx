@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView,StatusBar,View,Text,ScrollView, Pressable} fro
 import PastSignal from '../../../components/pastSignals';
 import Welcome from '@/components/Welcome';
 import CoreService from '../../../components/CoreService';
-import LineChart2 from '@/components/chart';
+import TradingSignalsChart from '@/components/chart';
 
 
 export default function HomeScreen() {
@@ -15,7 +15,7 @@ export default function HomeScreen() {
           <Welcome/>
         </View>
         <View>
-            <LineChart2/>
+            <TradingSignalsChart/>
         </View>
         <View>
           <CoreService/>

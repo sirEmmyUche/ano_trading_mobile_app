@@ -1,64 +1,48 @@
-import { StyleSheet, View, Text } from "react-native";
-import {
-  VictoryArea,
-  VictoryChart,
-  VictoryLine,
-  VictoryTheme,
-  VictoryScatter,
-} from "victory-native";
+import React, { useState } from 'react';
+import { View, Button, Text } from 'react-native';
+import { LineChart } from "react-native-gifted-charts";
+import { useQuery } from '@tanstack/react-query';
+import { fetchYearlyData } from '@/APIs';
+import { useSession } from '@/context/userContext';
+// // Function to fetch monthly data
+// const fetchMonthlyData = async () => {
+//   const response = await axios.get('/api/monthly-signals');
+//   return response.data.map((item, index) => ({ value: item.value, label: ${index + 1} }));
+// };
 
-export default function LineChart2(props){
-  const data = [
-      { x: 'Mon', y: 150 },
-      { x: 'Tue', y: 230 },
-      { x: 'Wed', y: 224 },
-      { x: 'Thu', y: 218 },
-      { x: 'Fri', y: 135 },
-      { x: 'Sat', y: 147 },
-      { x: 'sun', y: 260 },
-    ];
+
+export default function TradingSignalsChart(){
+  const [view, setView] = useState<string|[]>([]);
+  const {session} = useSession();
+  const token = session?.user.token;
+
+  const {data, isLoading, isFetching, error} = useQuery({
+    queryKey:['yearly-signals',], 
+    queryFn: ()=> fetchYearlyData(token)
+});
+
+const inputData = [{
+    label: data?.signals.map((item:any)=>item.month),
+    value: data?.signals.map((item:any)=>item.forex)
+}]
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Victory Native</Text>
-      <VictoryChart
-        theme={VictoryTheme.material}
-        height={250}
-        width={400}
-      >
-        <VictoryArea
-          style={{ data: { fill: "rgba(230, 231, 231,0.8)" } }}
-          data={data}
-          animate={{
-            duration: 2000,
-            onLoad: { duration: 1000 },
-          }}
-        />
-        <VictoryLine
-          data={data}
-          style={{ data: { stroke: "#d6d6d7", strokeWidth: 2 } }}
-        />
-        <VictoryScatter
-          data={data}
-          size={4}
-          style={{ data: { fill: "#24262a" } }}
-        />
-      </VictoryChart>
+    <View style={{ padding: 20 }}>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center' }}>
+        {view === 'monthly' ? 'Total Signals Sent This Month' : 'Total Signals Sent This Year'}
+      </Text>
+      <LineChart
+        areaChart
+        data={inputData}
+        height={300}
+        startFillColor="rgba(29, 139, 241, 0.5)"
+        endFillColor="rgba(29, 139, 241, 0.1)"
+      />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
+        <Button title="Monthly" onPress={() => setView('monthly')} />
+        <Button title="Yearly" onPress={() => setView('yearly')} />
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-    title: {
-      padding: 5,
-      borderRadius:100,
-      borderWidth: 1,
-      borderColor: 'red',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    container: {
-    //   borderRadius: 100,
-      borderWidth: 1,
-      borderColor: 'red',
-    },
-  });

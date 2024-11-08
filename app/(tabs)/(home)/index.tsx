@@ -15,10 +15,10 @@ export default function HomeScreen() {
           <Welcome/>
         </View>
         <View>
-            <TradingSignalsChart/>
+          <CoreService/>
         </View>
         <View>
-          <CoreService/>
+            <TradingSignalsChart/>
         </View>
         <View>
           <View style={{marginBottom:10,marginTop:10}}>

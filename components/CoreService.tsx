@@ -1,27 +1,25 @@
-import { StyleSheet,Pressable,Image,Text,View,Platform} from 'react-native';
+import { StyleSheet,Pressable,Text,View,} from 'react-native';
 import { Link } from 'expo-router';
+import { MaterialIcons,FontAwesome5,MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function CoreService(){
 
     return(
         <View style={[styles.coreServiceParentWrapper,]}>
-          {/* <Text  style={styles.coreServiceTitle}>Services</Text> */}
           <View style={styles.serviceContentParent}>
           <Link href={'/how_to_use_signals'} asChild>
               <Pressable style={[styles.serviceItem,]}>
                 <View style={styles.imageBox}>
-                  <Image source={require('@/assets/images/signal-2-img-mobile.png')} 
-                  style={styles.image} resizeMode="contain" />
+                  <MaterialIcons name="tips-and-updates" size={24} color="#FFA500" />
                 </View>
-                  <Text style={styles.serviceTextSubtitle}>Signals</Text>
+                  <Text style={styles.serviceTextSubtitle}>Tips</Text>
               </Pressable>
             </Link>
 
             <Link href={'/join_meeting'} asChild>
               <Pressable style={[styles.serviceItem,]}>
                 <View style={styles.imageBox}>
-                  <Image source={require('@/assets/images/signal-4-img-mobile.png')} 
-                  style={styles.image} resizeMode="contain" />
+                  <FontAwesome5 name="chalkboard-teacher" size={24} color="#9900FF" />
                 </View>
                   <Text style={styles.serviceTextSubtitle}>Training</Text>
               </Pressable>
@@ -30,8 +28,7 @@ export default function CoreService(){
               <Link href={'/'} asChild >
                 <Pressable style={[styles.serviceItem,]}>
                 <View style={styles.imageBox}>
-                  <Image source={require('@/assets/images/signal-3-img-mobile.png')} 
-                  style={styles.image} resizeMode="contain" />
+                  <MaterialCommunityIcons name="finance" size={24} color="#7CE67C" />
                 </View>
                 <Text style={[styles.serviceTextSubtitle,]}>Assets</Text>
                 </Pressable>
@@ -42,21 +39,14 @@ export default function CoreService(){
 }
 
 const styles = StyleSheet.create({
-    // coreServiceTitle: {
-    //     // textAlign: 'center',
-    //     fontSize:30,
-    //     fontWeight:'bold',
-    //     marginTop: 10,
-    //     marginBottom: 10,
-    //     color:'#fff',
-    //   },
       serviceTextParagraph:{
         textAlign:'center',
         // color:'#fff',
       },
       serviceTextSubtitle: {
         textAlign:'center',
-        color:'#323538',//'rgb(250, 186, 48)',
+        color:'#fff',
+        opacity:0.4,//'rgb(250, 186, 48)',
         fontSize:14,
         fontWeight:'bold',
       },

@@ -16,7 +16,7 @@ const QueryData: React.FC<QueryDataProps> = ({ apiFunction, renderData }) => {
   const [page, setPage] = useState(0);
   const {session} = useSession();
   const token = session?.user.token;
-  const { isLoading, isError, data, error, isFetching, isPlaceholderData } = useQuery({
+  const { isLoading, isError, data, error, isFetching, isPlaceholderData, } = useQuery({
     queryKey: ['signals', page],
     queryFn: () => apiFunction(page,token),
     placeholderData: keepPreviousData,

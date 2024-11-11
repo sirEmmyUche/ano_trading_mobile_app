@@ -12,7 +12,7 @@ export default function GoogleSignIn() {
   const {setSession } = useSession();
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
-  const [disableButton, setDisableButton] = useState(false);
+  const [disableButton, setDisableButton] = useState<boolean>(false);
 
   const mutation = useMutation({
     mutationFn: (token:string)=> googleOauth(token),

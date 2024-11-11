@@ -1,5 +1,5 @@
 export const baseUrl:string = 'https://anotrade-server.onrender.com'; 
-// export const baseUrl:string = 'https://30dc-105-112-96-153.ngrok-free.app'; 
+// export const baseUrl:string = 'https://93b8-105-112-221-169.ngrok-free.app'; 
 // export const baseUrl:string = 'http://localhost:3000'; 
 
 //If you change the baseUrl here, always change it at userAvi.tsx for file upload
@@ -113,9 +113,9 @@ export const getPastSignals = async()=>{
     }
 }
 
-export const getForexSignals = async(page:number,token:string|undefined) => {
+export const getForexSignals = async(page:number,token:string|undefined,status:string) => {
     try {
-        const res = await fetch(`${baseUrl}/api/forex/signals?page=${page}`, {
+        const res = await fetch(`${baseUrl}/api/forex/signals?page=${page}&status=${status}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -130,9 +130,9 @@ export const getForexSignals = async(page:number,token:string|undefined) => {
 }
 
 
-export const getCryptoSignals = async(page:number,token:string|undefined)=>{
+export const getCryptoSignals = async(page:number,token:string|undefined,status:string)=>{
     try{
-        const res = await fetch(`${baseUrl}/api/crypto/signals?page=${page}`,{
+        const res = await fetch(`${baseUrl}/api/crypto/signals?page=${page}&status=${status}`,{
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -147,9 +147,9 @@ export const getCryptoSignals = async(page:number,token:string|undefined)=>{
     }
 }
 
-export const getStockSignals = async(page:number, token:string|undefined)=>{
+export const getStockSignals = async(page:number, token:string|undefined,status:string)=>{
     try{
-        const res = await fetch(`${baseUrl}/api/stock/signals?page=${page}`,{
+        const res = await fetch(`${baseUrl}/api/stock/signals?page=${page}&status=${status}`,{
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

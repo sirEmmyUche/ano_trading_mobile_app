@@ -7,7 +7,7 @@ import { statusColor } from '../constants/statusColor'
 import { MaterialTabBarIcon,} from './navigation/TabBarIcon'
 
 interface LiveSignalProps {
-  signalAPI: (page: number, token:string|undefined) => Promise<any>; 
+  signalAPI: (page: number, token:string|undefined,status:string) => Promise<any>; 
 }
 const LiveSignal = ({ signalAPI }: LiveSignalProps) => {
 const renderData = (data: any) => {
@@ -109,22 +109,10 @@ const styles = StyleSheet.create({
     backgroundColor:'#121212',
     flexDirection:'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    // borderWidth:2,
+    // borderColor:'blue',
   },
-  filterContainer: {
-    flexDirection: 'row',
-    flexWrap:'wrap',
-    justifyContent: 'space-around',
-    alignItems:'center',
-    alignContent:'center',
-    width: '100%',
-    marginBottom: 10,
-    height:130,
-  },
-  // filterButton: {
-  //   alignItems: 'center',
-  //   justifyContent:'center',
-  // },
   signalChartParent: {
     width: '100%',
     borderWidth: 1,
